@@ -21,7 +21,6 @@ public class UserRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private final Map<Integer,Role> roleHashMap =  Map.of(1,Role.ADMIN, 2, Role.USER, 3, Role.CREATOR);
 
     private final RowMapper<User> userRowMapper = (ResultSet rs, int rowNum) -> {
         User user = new User();
@@ -30,7 +29,7 @@ public class UserRepository {
         user.setLogin(rs.getString("login"));
         user.setPass(rs.getString("pass"));
         int role = rs.getInt("role");
-        user.setRoles(Collections.singletonList(roleHashMap.get(role)));
+        user.setRoles(Collections.singletonList(Role.fromInt(role)));
         return user;
     };
 
