@@ -1,8 +1,12 @@
 package org.omega.omegapoisk.controller;
 
+import org.omega.omegapoisk.data.AddContentDTO;
 import org.omega.omegapoisk.data.CardDTO;
 import org.omega.omegapoisk.data.ContentPageDTO;
 import org.omega.omegapoisk.entity.Anime;
+import org.omega.omegapoisk.entity.Comic;
+import org.omega.omegapoisk.entity.User;
+import org.omega.omegapoisk.repository.ContentRepository;
 import org.omega.omegapoisk.service.ContentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +26,8 @@ public class Test {
     @Autowired
     ContentService contentService;
 
+    @Autowired
+    ContentRepository contentRepository;
 
     @GetMapping("/all")
     public ResponseEntity<?> all() {
@@ -43,22 +49,22 @@ public class Test {
     }
 
     @PostMapping("/file")
-    public ResponseEntity<?> file(@RequestPart("json") ContentPageDTO<Anime> contentDTO, @RequestPart("image") MultipartFile file) {
-        System.out.println(contentDTO.getContent());
-        System.out.println(file.getSize());
-        System.out.println(file.getOriginalFilename());
-        try {
-            InputStream inputStream = file.getInputStream();
-            System.out.println(System.getProperty("user.home"));
-            String path = System.getProperty("user.home") + "/omega/anime/" + contentDTO.getContent().getId() + "_" +  file.getOriginalFilename();
-            FileOutputStream fileOutputStream = new FileOutputStream(path);
-            fileOutputStream.write(inputStream.readAllBytes());
-            fileOutputStream.close();
-            System.out.println(path);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public ResponseEntity<?> file(@RequestPart("json") AddContentDTO<Comic> contentDTO, @RequestPart("image") MultipartFile file) {
+        System.out.println("file test");
+        User user = new User();
+        user.setId(1);
+        contentRepository.addComic(contentDTO, file, user );
 
         return ResponseEntity.ok("");
+    }
+
+
+    @GetMapping("/add")
+    public ResponseEntity<?> add() {
+        AddContentDTO<Anime> animeAddContentDTO = new AddContentDTO<>();
+        animeAddContentDTO.setStudio("studio name");
+        animeAddContentDTO.setContent(new Anime(123));
+        animeAddContentDTO.setTags(contentService.getAllTags());
+        return ResponseEntity.ok(animeAddContentDTO);
     }
 }

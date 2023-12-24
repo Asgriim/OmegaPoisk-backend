@@ -1,13 +1,7 @@
-POST localhost:27401/auth/register
+POST localhost:27401/auth/login
 Content-Type: application/json
 
-{
-  "id": 0,
-  "login": "aboba3",
-  "email": "aboba3",
-  "pass": 1234,
-  "role": "USER"
-}
+{"id":0,"login":"omega","email":"","pass":"omega","role":"USER","token":""}
 
 ###
 GET localhost:27401/api/read/tv_show
@@ -24,3 +18,6 @@ GET localhost:27401/api/read/anime
 ###
 
 GET localhost:27401/api/read/all_tags
+
+###
+GET localhost:27401/test/add

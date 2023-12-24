@@ -33,11 +33,23 @@
             formData.append('image', imageFile);
             let cont = {
                 "content": {
-                    "id": 1,
+                    "id": 0,
                     "title": "title",
-                    "description": "desc",
-                    "seriesNum": 1,
-                }
+                    "description": "desct';--",
+                    "posterPath": "//",
+                    "seriesNum": 123
+                },
+                "studio": "studio name",
+                "tags": [
+                    {
+                        "id": 1,
+                        "name": "GOVNO"
+                    },
+                    {
+                        "id": 2,
+                        "name": "PENIS"
+                    }
+                ]
             }
             const json = JSON.stringify(cont);
             const blob = new Blob([json], {

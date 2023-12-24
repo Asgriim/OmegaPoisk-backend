@@ -39,6 +39,8 @@ public class AuthController {
                 throw new InvaliUserOrPasswordException();
             }
             userDTO.setId(user.getId());
+            userDTO.setEmail(user.getEmail());
+            userDTO.setRole(String.valueOf(user.getRoles().get(0)));
         } catch (UsernameNotFoundException e) {
             throw new InvaliUserOrPasswordException();
         }
