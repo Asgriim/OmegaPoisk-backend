@@ -2,7 +2,6 @@ package org.omega.omegapoisk.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.omega.omegapoisk.data.CardDTO;
-import org.omega.omegapoisk.data.ContentDTO;
 import org.omega.omegapoisk.entity.*;
 import org.omega.omegapoisk.service.ContentService;
 import org.springframework.http.ResponseEntity;
@@ -54,4 +53,8 @@ public class ReadContentController {
         return ResponseEntity.ok(cardDTOList);
     }
 
+    @GetMapping("/all_tags")
+    public ResponseEntity<?> getAllTags() {
+        return ResponseEntity.ok(contentService.getAllTags());
+    }
 }

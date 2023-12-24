@@ -1,7 +1,6 @@
 package org.omega.omegapoisk.service;
 
 import org.omega.omegapoisk.data.CardDTO;
-import org.omega.omegapoisk.data.ContentDTO;
 import org.omega.omegapoisk.entity.Content;
 import org.omega.omegapoisk.entity.OmegaEntity;
 import org.omega.omegapoisk.entity.Tag;
@@ -17,6 +16,10 @@ public class ContentService {
 
     @Autowired
     private ContentRepository contentRepository;
+
+    public List<Tag> getAllTags() {
+        return contentRepository.getAllTags();
+    }
 
     public List<Tag> getContentTags(int contendId) {
         return contentRepository.getContentTags(contendId);

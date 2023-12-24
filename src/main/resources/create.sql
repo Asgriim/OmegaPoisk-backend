@@ -86,6 +86,37 @@ CREATE TABLE IF NOT EXISTS  content_tags (
                                              FOREIGN KEY (tagId) REFERENCES tags (id) ON DELETE CASCADE
 );
 
+-- Таблица review
+CREATE TABLE IF NOT EXISTS review
+(
+    id        SERIAL PRIMARY KEY,
+    test      TEXT,
+    userId    INT,
+    contentId INT,
+    FOREIGN KEY (userId) REFERENCES user_ (id) ON DELETE CASCADE,
+    FOREIGN KEY (contentId) REFERENCES content (id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS owner_of_content(
+                                               userId    INT,
+                                               contentId INT,
+                                               FOREIGN KEY (userId) REFERENCES user_ (id) ON DELETE CASCADE,
+                                               FOREIGN KEY (contentId) REFERENCES content (id) ON DELETE CASCADE
+);
+
+-- Таблица studio
+CREATE TABLE IF NOT EXISTS studio (
+                                      id SERIAL PRIMARY KEY,
+                                      name TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS studio_contents (
+                                               studioId INT,
+                                               contentId INT,
+                                               FOREIGN KEY (studioId) REFERENCES studio(id) ON DELETE CASCADE,
+                                               FOREIGN KEY (contentId) REFERENCES content(id) ON DELETE CASCADE
+                                           );
+
 
 CREATE OR REPLACE FUNCTION add_to_content()
     RETURNS TRIGGER AS $$
@@ -123,7 +154,7 @@ CREATE OR REPLACE FUNCTION calc_avg_rate()
     RETURNS TRIGGER AS $$
 BEGIN
     UPDATE avg_rating
-    SET avg_rate = (SELECT AVG(rating.value) FROM rating WHERE rating.contentId = NEW.contentId)
+    SET avgrate = (SELECT AVG(rating.value) FROM rating WHERE rating.contentId = NEW.contentId)
         WHERE contentId = NEW.contentId;
     RETURN NEW;
 END;

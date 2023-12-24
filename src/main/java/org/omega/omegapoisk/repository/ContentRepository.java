@@ -30,6 +30,10 @@ public class ContentRepository {
         return (List<Tag>) omegaORM.getListFromRowSet(Tag.class, sqlRowSet);
     }
 
+    public List<Tag> getAllTags() {
+        return (List<Tag>) omegaORM.getListOf(Tag.class);
+    }
+
     public <T extends Content> List<CardDTO<T>> getAllCards(Class<? extends OmegaEntity> cl) {
         String tableName = omegaORM.getTableName(cl);
         String req = String.format("select * from %s join avg_rating on contentid = id", tableName);

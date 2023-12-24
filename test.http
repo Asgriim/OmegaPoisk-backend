@@ -19,3 +19,8 @@ Authorization:Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDMyNTg4MzgsImV4cCI6MTcwMz
 
 ###
 GET localhost:27401/api/read/anime
+
+
+###
+
+GET localhost:27401/api/read/all_tags
