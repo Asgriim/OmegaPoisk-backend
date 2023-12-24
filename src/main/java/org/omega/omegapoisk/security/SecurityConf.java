@@ -26,7 +26,7 @@ public class SecurityConf {
 
     private UserService userService;
 
-    RestAuthenticationEntryPoint entryPoint;
+    private RestAuthenticationEntryPoint entryPoint;
 
     @Bean
     public AuthFilter filter(){
@@ -44,7 +44,7 @@ public class SecurityConf {
         http
                 .cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests((authz) -> authz.requestMatchers("auth/*","test/*").permitAll())
+                .authorizeHttpRequests((authz) -> authz.requestMatchers("auth/*","test/*", "api/**").permitAll())
                 .addFilterBefore(filter(), UsernamePasswordAuthenticationFilter.class)
 //                .authorizeHttpRequests(authz -> authz.requestMatchers("test/*").hasAnyAuthority("ADMIN","CREATOR"))
                 ;

@@ -28,17 +28,36 @@ public class OmegaORM implements ORM{
 
     @Override
     public List<?> getListOf(Class<? extends OmegaEntity> cl) {
-
-        List<Object> omegaEntities = new ArrayList<>();
         try {
-            Method getTableMethod = cl.getMethod("getTableName");
+            Method getTableMethod = cl.getMethod("TableName");
             String tableName = (String) getTableMethod.invoke(cl.getConstructor().newInstance());
 
             String req = String.format("select * from %s", tableName);
 
-            List<Field> allFields = getFieldsOfClass(cl);
-
             SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(req);
+            return getListFromRowSet(cl, sqlRowSet);
+
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public String getTableName(Class<? extends OmegaEntity> cl) {
+        try {
+            Method getTableMethod = cl.getMethod("TableName");
+            return  (String) getTableMethod.invoke(cl.getConstructor().newInstance());
+        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @Override
+    public List<?> getListFromRowSet(Class<? extends OmegaEntity> cl, SqlRowSet sqlRowSet) {
+        List<Object> omegaEntities = new ArrayList<>();
+        List<Field> allFields = getFieldsOfClass(cl);
+        try {
             while (sqlRowSet.next()) {
                 OmegaEntity entity = cl.getConstructor().newInstance();
                 for (var field : allFields) {
@@ -49,9 +68,7 @@ public class OmegaORM implements ORM{
                 }
                 omegaEntities.add(entity);
             }
-
-
-        } catch (NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e) {
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
         return omegaEntities;

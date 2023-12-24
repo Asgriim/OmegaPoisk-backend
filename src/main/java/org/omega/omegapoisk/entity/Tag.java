@@ -2,18 +2,17 @@ package org.omega.omegapoisk.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class Game extends Content implements OmegaEntity{
-    private boolean isFree;
+@AllArgsConstructor
+public class Tag implements OmegaEntity {
+    private int id;
+    private String name;
 
     @Override
     public String TableName() {
-        return "game";
+        return "tags";
     }
 }

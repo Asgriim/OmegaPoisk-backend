@@ -9,7 +9,13 @@ Content-Type: application/json
   "role": "USER"
 }
 
+###
+GET localhost:27401/api/read/tv_show
+
 
 ####
-GET localhost:27401/test/anime
+GET localhost:27401/test/file
 Authorization:Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDMyNTg4MzgsImV4cCI6MTcwMzM0NTIzOCwic3ViIjoiYWJvYmEifQ.3gnvuU-iO1ZmItmRA68TrC3jWla1jYFxLVc8uNQt0EMu_8KNJqbYVopOehUt6-GToyeBZS6oVGSVSuD9EU9u-w
+
+###
+GET localhost:27401/api/read/anime

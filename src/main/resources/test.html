@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload and Save Image</title>
+    <style>
+        /* Add your styles here if needed */
+    </style>
+</head>
+<body>
+
+<form id="imageForm" enctype="multipart/form-data">
+    <label for="imageInput">Choose an image:</label>
+    <input type="file" id="imageInput" name="image" accept="image/*">
+    <button type="button" onclick="saveImage()">Save Image</button>
+</form>
+
+<script>
+    function saveImage() {
+        // Get the input element
+        const imageInput = document.getElementById('imageInput');
+
+        // Check if a file is selected
+        if (imageInput.files.length > 0) {
+            // Get the selected file
+            const imageFile = imageInput.files[0];
+
+            // Create a FormData object
+            let formData = new FormData();
+
+            // Append the file to the FormData object with a specified name (e.g., 'image')
+            formData.append('image', imageFile);
+            let cont = {
+                "content": {
+                    "id": 1,
+                    "title": "title",
+                    "description": "desc",
+                    "seriesNum": 1,
+                }
+            }
+            const json = JSON.stringify(cont);
+            const blob = new Blob([json], {
+                type: 'application/json'
+            });
+            formData.append("json", blob);
+            req = {
+                file : formData
+            }
+            // Perform a POST request to save the image
+            fetch('http://localhost:27401/test/file', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Check if the server successfully saved the image
+                    if (data.success) {
+                        alert('Image saved successfully!');
+                    } else {
+                        alert('Failed to save image.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while saving the image.');
+                });
+        } else {
+            alert('Please choose an image to upload.');
+        }
+    }
+</script>
+
+</body>
+</html>

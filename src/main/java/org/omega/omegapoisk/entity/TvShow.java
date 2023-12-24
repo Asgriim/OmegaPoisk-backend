@@ -7,13 +7,13 @@ import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class Game extends Content implements OmegaEntity{
-    private boolean isFree;
+@AllArgsConstructor
+public class TvShow extends Content implements OmegaEntity{
+    private int seriesNum;
 
     @Override
     public String TableName() {
-        return "game";
+        return "tv_show";
     }
 }

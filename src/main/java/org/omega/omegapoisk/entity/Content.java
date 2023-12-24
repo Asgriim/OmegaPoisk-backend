@@ -10,4 +10,5 @@ public class Content {
     private int id;
     private String title;
     private String description;
+    private String posterPath;
 }

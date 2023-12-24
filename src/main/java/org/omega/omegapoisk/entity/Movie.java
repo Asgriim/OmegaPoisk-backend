@@ -6,14 +6,14 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @EqualsAndHashCode(callSuper = true)
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
-public class Game extends Content implements OmegaEntity{
-    private boolean isFree;
+@AllArgsConstructor
+@Data
+public class Movie extends Content implements OmegaEntity{
+    private int duration;
 
     @Override
     public String TableName() {
-        return "game";
+        return "movie";
     }
 }

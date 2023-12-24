@@ -22,7 +22,7 @@ import java.util.List;
 public class UserService implements UserDetailsService {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
 
     public void test() {
         User user = new User(1,"1","2","1",Collections.singletonList(Role.ADMIN));
@@ -32,7 +32,7 @@ public class UserService implements UserDetailsService {
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
         List<User> usersByLogin = userRepository.getUsersByLogin(username);
-        if (usersByLogin.size() < 1) {
+        if (usersByLogin.isEmpty()) {
             throw new UsernameNotFoundException("no such user");
         }
         return usersByLogin.get(0);

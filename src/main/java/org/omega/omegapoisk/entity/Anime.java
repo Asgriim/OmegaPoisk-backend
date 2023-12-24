@@ -11,7 +11,7 @@ public class Anime extends Content implements OmegaEntity{
     private int seriesNum;
 
     @Override
-    public String getTableName() {
+    public String TableName() {
         return "anime";
     }
 }
