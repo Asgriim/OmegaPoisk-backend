@@ -46,7 +46,7 @@ public class SecurityConf {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authz) -> authz.requestMatchers("auth/*","test/*", "api/**").permitAll())
                 .addFilterBefore(filter(), UsernamePasswordAuthenticationFilter.class)
-//                .authorizeHttpRequests(authz -> authz.requestMatchers("test/*").hasAnyAuthority("ADMIN","CREATOR"))
+                .authorizeHttpRequests(authz -> authz.requestMatchers("api/creator/*").hasAnyAuthority("ADMIN","CREATOR"))
                 ;
 
         return http.build();

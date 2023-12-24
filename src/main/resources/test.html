@@ -60,8 +60,9 @@
                 file : formData
             }
             // Perform a POST request to save the image
-            fetch('http://localhost:27401/test/file', {
+            fetch('http://localhost:27401/api/creator/add/anime', {
                 method: 'POST',
+                headers : {'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDM0NTEwNTksImV4cCI6MTcwMzUzNzQ1OSwic3ViIjoib21lZ2EifQ.dyBgnv1dU_GLaj2WkYNjFho06N5XOmVpHHSaDEuZrIUqOYr5EubBVrm_NmmCUTAmT8skuTVrMwLB6L8RP3mreA'},
                 body: formData
             })
                 .then(response => response.json())

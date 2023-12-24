@@ -5,6 +5,7 @@ import org.omega.omegapoisk.data.AddContentDTO;
 import org.omega.omegapoisk.data.CardDTO;
 import org.omega.omegapoisk.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
@@ -17,6 +18,9 @@ import java.util.List;
 
 @Repository
 public class ContentRepository {
+
+    @Value("${imageDir.path}")
+    private String imageDirPath;
 
     @Autowired
     private OmegaORM omegaORM;
@@ -36,25 +40,13 @@ public class ContentRepository {
     }
 
     public <T extends Content> List<CardDTO<T>> getAllCards(Class<? extends OmegaEntity> cl) {
-        String tableName = omegaORM.getTableName(cl);
-        String req = String.format("select * from %s join avg_rating on contentid = id", tableName);
-        SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(req);
-
-        List<T> list = (List<T>) omegaORM.getListFromRowSet(cl,sqlRowSet);
-        sqlRowSet.beforeFirst();
-        List<AvgRating> avgRatings = (List<AvgRating>) omegaORM.getListFromRowSet(AvgRating.class, sqlRowSet);
-
-        List<CardDTO<T>> cards = new ArrayList<>();
-        for (int i = 0; i < list.size(); i++) {
-                CardDTO<T> cardDTO = new CardDTO<>();
-                cardDTO.setContent(list.get(i));
-                cardDTO.setAvgRating(avgRatings.get(i).getAvgRate());
-                cardDTO.setTags(getContentTags(list.get(i).getId()));
-                cards.add(cardDTO);
-        }
+        List<CardDTO<T>> cards = omegaORM.getAllCards(cl);
         return cards;
     }
 
+    public <T extends Content> CardDTO<T> getCardById(Class<? extends OmegaEntity> cl, int id) {
+        return omegaORM.getCardById(cl,id);
+    }
 
     private String createFileName(MultipartFile file) {
         String prefix = System.currentTimeMillis() + "_";
@@ -62,7 +54,7 @@ public class ContentRepository {
     }
 
     private String saveFile(MultipartFile file, String dir) throws IOException {
-        String path = System.getProperty("user.home") + "/omega/" + dir + "/" + createFileName(file);
+        String path = System.getProperty("user.home") + imageDirPath + dir + "/" + createFileName(file);
         FileOutputStream fileOutputStream = new FileOutputStream(path);
         fileOutputStream.write(file.getInputStream().readAllBytes());
         fileOutputStream.close();
@@ -73,7 +65,7 @@ public class ContentRepository {
         try {
             Anime content = contentDTO.getContent();
             String path = saveFile(file, content.TableName());
-            String query = "select add_comic_as_creator(" + "?, nextval('content_id_seq')::int, ?, ?, ?, ?, ?" + ")";
+            String query = "select add_anime_as_creator(" + "?, nextval('content_id_seq')::int, ?, ?, ?, ?, ?" + ")";
             System.out.println(query);
             jdbcTemplate.queryForRowSet(query, user.getId(), content.getTitle(), content.getDescription(),
                     content.getSeriesNum(),path, contentDTO.getStudio()

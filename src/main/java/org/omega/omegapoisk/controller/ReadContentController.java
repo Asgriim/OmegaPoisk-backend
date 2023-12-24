@@ -24,7 +24,7 @@ public class ReadContentController {
 
     @GetMapping("/anime/{id}")
     public ResponseEntity<?> animeById(@PathVariable int id){
-        return ResponseEntity.ok("");
+        return ResponseEntity.ok(contentService.getCardById(Anime.class, id));
     }
 
 //todo one elem by id
@@ -35,10 +35,21 @@ public class ReadContentController {
         return ResponseEntity.ok(cardDTOList);
     }
 
+    @GetMapping("/comic/{id}")
+    public ResponseEntity<?> comicById(@PathVariable int id){
+        return ResponseEntity.ok(contentService.getCardById(Comic.class, id));
+    }
+
+
     @GetMapping("/game")
     public ResponseEntity<?> game() {
         List<CardDTO<Game>> cardDTOList = contentService.getAllCardsOfContent(Game.class);
         return ResponseEntity.ok(cardDTOList);
+    }
+
+    @GetMapping("/game/{id}")
+    public ResponseEntity<?> gameById(@PathVariable int id){
+        return ResponseEntity.ok(contentService.getCardById(Game.class, id));
     }
 
     @GetMapping("/movie")
@@ -47,11 +58,23 @@ public class ReadContentController {
         return ResponseEntity.ok(cardDTOList);
     }
 
+    @GetMapping("/movie/{id}")
+    public ResponseEntity<?> movieById(@PathVariable int id){
+        return ResponseEntity.ok(contentService.getCardById(Movie.class, id));
+    }
+
     @GetMapping("/tv_show")
     public ResponseEntity<?> tvShow() {
         List<CardDTO<TvShow>> cardDTOList = contentService.getAllCardsOfContent(TvShow.class);
         return ResponseEntity.ok(cardDTOList);
     }
+
+    @GetMapping("/tv_show/{id}")
+    public ResponseEntity<?> tv_showById(@PathVariable int id){
+        return ResponseEntity.ok(contentService.getCardById(TvShow.class, id));
+    }
+
+
 
     @GetMapping("/all_tags")
     public ResponseEntity<?> getAllTags() {

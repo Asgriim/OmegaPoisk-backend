@@ -1,6 +1,9 @@
 package org.omega.omegapoisk.ORM;
 
+import org.omega.omegapoisk.data.CardDTO;
+import org.omega.omegapoisk.entity.Content;
 import org.omega.omegapoisk.entity.OmegaEntity;
+import org.omega.omegapoisk.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -72,5 +75,130 @@ public class OmegaORM implements ORM{
             throw new RuntimeException(e);
         }
         return omegaEntities;
+    }
+
+
+    //select * from anime
+    //    JOIN content_tags ON content_tags.contentid = anime.id
+    //    JOIN tags ON tags.id = content_tags.tagid order by anime.id;
+
+    @Override
+    public <T extends Content> List<CardDTO<T>> getAllCards(Class<? extends OmegaEntity> cl) {
+        String tableName = getTableName(cl);
+        String objId = tableName + ".id";
+        String req = String.format("select * from %s left join content_tags ON content_tags.contentid = %s left join tags ON tags.id = content_tags.tagid left join avg_rating ON avg_rating.contentid = content_tags.contentid order by %s", tableName, objId,objId);
+        System.out.println(req);
+        List<CardDTO<T>> cards = new ArrayList<>();
+        List<Field> fieldsOfClass = getFieldsOfClass(cl);
+
+        try {
+            int lastId = 0;
+            int currId = 0;
+
+            SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(req);
+            CardDTO<T> currCard = null;
+
+            while (sqlRowSet.next()) {
+                currId =  sqlRowSet.getInt("id");
+
+                if (currId != lastId) {
+
+                    if (currCard != null) {
+                        cards.add(currCard);
+                    }
+
+                    currCard = new CardDTO<>();
+                    T entity = (T) cl.getConstructor().newInstance();
+                    entity.setId(currId);
+                    for (var field : fieldsOfClass) {
+                        String fieldName = field.getName();
+                        field.setAccessible(true);
+                        field.set(entity, sqlRowSet.getObject(fieldName));
+                        field.setAccessible(false);
+                    }
+                    currCard.setContent(entity);
+                    currCard.setTags(new ArrayList<>());
+                    currCard.setAvgRating(sqlRowSet.getDouble("avgrate"));
+                    if (sqlRowSet.getString("name") != null) {
+                        Tag tag = new Tag();
+                        tag.setId(sqlRowSet.getInt("tagid"));
+                        tag.setName(sqlRowSet.getString("name"));
+                        currCard.getTags().add(tag);
+                    }
+                }
+                else {
+                    if (sqlRowSet.getString("name") != null) {
+                        Tag tag = new Tag();
+                        tag.setId(sqlRowSet.getInt("tagid"));
+                        tag.setName(sqlRowSet.getString("name"));
+                        currCard.getTags().add(tag);
+                    }
+
+                }
+                lastId = currId;
+            }
+            if (currCard != null) {
+                cards.add(currCard);
+            }
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
+        return cards;
+    }
+
+    //select * from %s left join content_tags ON content_tags.contentid = %s left join tags ON tags.id = content_tags.tagid left join avg_rating ON avg_rating.contentid = content_tags.contentid where %s =
+    @Override
+    public <T extends Content> CardDTO<T> getCardById(Class<? extends OmegaEntity> cl, int contentId) {
+        String tableName = getTableName(cl);
+        String objId = tableName + ".id";
+        String req = String.format("select * from %s left join content_tags ON content_tags.contentid = %s left join tags ON tags.id = content_tags.tagid left join avg_rating ON avg_rating.contentid = content_tags.contentid where %s =", tableName, objId,objId)
+                + contentId;
+        System.out.println(req);
+        List<Field> fieldsOfClass = getFieldsOfClass(cl);
+        try {
+            int lastId = 0;
+            int currId = 0;
+
+            SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(req);
+            CardDTO<T> currCard = null;
+
+            while (sqlRowSet.next()) {
+                currId =  sqlRowSet.getInt("id");
+
+                if (currId != lastId) {
+                    currCard = new CardDTO<>();
+                    T entity = (T) cl.getConstructor().newInstance();
+                    entity.setId(currId);
+                    for (var field : fieldsOfClass) {
+                        String fieldName = field.getName();
+                        field.setAccessible(true);
+                        field.set(entity, sqlRowSet.getObject(fieldName));
+                        field.setAccessible(false);
+                    }
+                    currCard.setContent(entity);
+                    currCard.setTags(new ArrayList<>());
+                    currCard.setAvgRating(sqlRowSet.getDouble("avgrate"));
+                    if (sqlRowSet.getString("name") != null) {
+                        Tag tag = new Tag();
+                        tag.setId(sqlRowSet.getInt("tagid"));
+                        tag.setName(sqlRowSet.getString("name"));
+                        currCard.getTags().add(tag);
+                    }
+                }
+                else {
+                    if (sqlRowSet.getString("name") != null) {
+                        Tag tag = new Tag();
+                        tag.setId(sqlRowSet.getInt("tagid"));
+                        tag.setName(sqlRowSet.getString("name"));
+                        currCard.getTags().add(tag);
+                    }
+
+                }
+                lastId = currId;
+            }
+            return currCard;
+        } catch (InvocationTargetException | InstantiationException | IllegalAccessException | NoSuchMethodException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
