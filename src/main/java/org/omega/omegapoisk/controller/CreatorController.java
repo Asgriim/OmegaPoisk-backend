@@ -135,6 +135,19 @@ public class CreatorController {
         return ResponseEntity.ok(contentService.getOwnerCards(cl, user.getId()));
     }
 
+    @GetMapping("/read/tv_show")
+    public ResponseEntity<?> readOwnerTvShow() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.loadUserByUsername(userDetails.getUsername());
+        checkUser(user);
+        Class cl = TvShow.class;
+        if (user.getRoles().get(0).equals(Role.ADMIN)) {
+//            return ResponseEntity.ok("admin");
+            return ResponseEntity.ok(contentService.getAllCardsOfContent(cl));
+        }
+        return ResponseEntity.ok(contentService.getOwnerCards(cl, user.getId()));
+    }
+
 
 
 
