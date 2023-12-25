@@ -13,4 +13,12 @@ public interface ORM {
     List<?> getListFromRowSet(Class<? extends OmegaEntity> cl, SqlRowSet sqlRowSet);
     <T extends Content> List<CardDTO<T>> getAllCards(Class<? extends OmegaEntity> cl);
     <T extends Content> CardDTO<T> getCardById(Class<? extends OmegaEntity> cl, int contentId);
+    int nextVal(String seq);
+
+
+    //todo get cards of owner
+    //select * from anime join owner_of_content on owner_of_content.contentid = anime.id
+    //    left join content_tags on content_tags.contentid = anime.id
+    //                    left join tags ON tags.id = content_tags.tagid
+    //                    left join avg_rating ON avg_rating.contentid = content_tags.contentid where owner_of_content.userid = 1 order by anime.id;
 }

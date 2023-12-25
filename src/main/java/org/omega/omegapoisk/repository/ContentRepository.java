@@ -63,13 +63,16 @@ public class ContentRepository {
 
     public void addAnime(AddContentDTO<Anime> contentDTO, MultipartFile file, User user) {
         try {
+            int contentId = omegaORM.nextVal("content_id_seq");
+            System.out.println("content  id " + contentId);
             Anime content = contentDTO.getContent();
             String path = saveFile(file, content.TableName());
-            String query = "select add_anime_as_creator(" + "?, nextval('content_id_seq')::int, ?, ?, ?, ?, ?" + ")";
+            String query = "select add_anime_as_creator(" + "?, ?, ?, ?, ?, ?, ?" + ")";
             System.out.println(query);
-            jdbcTemplate.queryForRowSet(query, user.getId(), content.getTitle(), content.getDescription(),
+            jdbcTemplate.queryForRowSet(query, user.getId(),contentId ,content.getTitle(), content.getDescription(),
                     content.getSeriesNum(),path, contentDTO.getStudio()
             );
+            addContentTags(contentDTO.getTags(), contentId);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -79,12 +82,14 @@ public class ContentRepository {
     public void addComic(AddContentDTO<Comic> contentDTO, MultipartFile file, User user) {
         try {
             Comic content = contentDTO.getContent();
+            int contentId = omegaORM.nextVal("content_id_seq");
             String path = saveFile(file, content.TableName());
-            String query = "select add_comic_as_creator(" + "?, nextval('content_id_seq')::int, ?, ?, ?, ?, ?" + ")";
+            String query = "select add_comic_as_creator(" + "?, ?, ?, ?, ?, ?, ?" + ")";
             System.out.println(query);
-            jdbcTemplate.queryForRowSet(query, user.getId(), content.getTitle(), content.getDescription(),
+            jdbcTemplate.queryForRowSet(query, user.getId(),contentId, content.getTitle(), content.getDescription(),
                     content.isColored(),path, contentDTO.getStudio()
                     );
+            addContentTags(contentDTO.getTags(), contentId);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -94,12 +99,14 @@ public class ContentRepository {
     public void addGame(AddContentDTO<Game> contentDTO, MultipartFile file, User user) {
         try {
             Game content = contentDTO.getContent();
+            int contentId = omegaORM.nextVal("content_id_seq");
             String path = saveFile(file, content.TableName());
-            String query = "select add_game_as_creator(" + "?, nextval('content_id_seq')::int, ?, ?, ?, ?, ?" + ")";
+            String query = "select add_game_as_creator(" + "?, ?, ?, ?, ?, ?, ?" + ")";
             System.out.println(query);
-            jdbcTemplate.queryForRowSet(query, user.getId(), content.getTitle(), content.getDescription(),
+            jdbcTemplate.queryForRowSet(query, user.getId(), contentId ,content.getTitle(), content.getDescription(),
                     content.isFree(), path, contentDTO.getStudio()
             );
+            addContentTags(contentDTO.getTags(), contentId);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -109,11 +116,13 @@ public class ContentRepository {
         try {
             TvShow content = contentDTO.getContent();
             String path = saveFile(file, content.TableName());
-            String query = "select add_tv_show_as_creator(" + "?, nextval('content_id_seq')::int, ?, ?, ?, ?, ?" + ")";
+            int contentId = omegaORM.nextVal("content_id_seq");
+            String query = "select add_tv_show_as_creator(" + "?, ?, ?, ?, ?, ?, ?" + ")";
             System.out.println(query);
-            jdbcTemplate.queryForRowSet(query, user.getId(), content.getTitle(), content.getDescription(),
+            jdbcTemplate.queryForRowSet(query, user.getId(), contentId, content.getTitle(), content.getDescription(),
                     content.getSeriesNum(), path, contentDTO.getStudio()
             );
+            addContentTags(contentDTO.getTags(), contentId);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -123,14 +132,23 @@ public class ContentRepository {
         try {
             Movie content = contentDTO.getContent();
             String path = saveFile(file, content.TableName());
-            String query = "select add_movie_as_creator(" + "?, nextval('content_id_seq')::int, ?, ?, ?, ?, ?" + ")";
+            int contentId = omegaORM.nextVal("content_id_seq");
+            String query = "select add_movie_as_creator(" + "?, ?, ?, ?, ?, ?, ?" + ")";
             System.out.println(query);
-            jdbcTemplate.queryForRowSet(query, user.getId(), content.getTitle(), content.getDescription(),
+            jdbcTemplate.queryForRowSet(query, user.getId(),contentId ,content.getTitle(), content.getDescription(),
                     content.getDuration(), path, contentDTO.getStudio()
             );
+            addContentTags(contentDTO.getTags(), contentId);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
+
+    public void addContentTags(List<Tag> tags, int contentId) {
+        for (var tag : tags) {
+            jdbcTemplate.update("INSERT INTO content_tags(contentid, tagid) VALUES (?,?)", contentId, tag.getId());
+        }
+    }
+
 
 }

@@ -27,8 +27,6 @@ public class ReadContentController {
         return ResponseEntity.ok(contentService.getCardById(Anime.class, id));
     }
 
-//todo one elem by id
-
     @GetMapping("/comic")
     public ResponseEntity<?> comic() {
         List<CardDTO<Comic>> cardDTOList = contentService.getAllCardsOfContent(Comic.class);
