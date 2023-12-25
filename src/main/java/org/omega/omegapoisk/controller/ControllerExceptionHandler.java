@@ -1,5 +1,6 @@
 package org.omega.omegapoisk.controller;
 
+import org.omega.omegapoisk.exception.AccessDeniedException;
 import org.omega.omegapoisk.exception.InvaliUserOrPasswordException;
 import org.omega.omegapoisk.exception.UserAlreadyExistsException;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,11 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(InvaliUserOrPasswordException.class)
     public ResponseEntity<?> handleIUOPE() {
         return ResponseEntity.badRequest().body("Wrong login or password");
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<?> handleADE() {
+        return ResponseEntity.badRequest().body("You can't access this resource");
     }
 
 }

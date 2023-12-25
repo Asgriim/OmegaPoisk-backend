@@ -13,6 +13,7 @@ public interface ORM {
     List<?> getListFromRowSet(Class<? extends OmegaEntity> cl, SqlRowSet sqlRowSet);
     <T extends Content> List<CardDTO<T>> getAllCards(Class<? extends OmegaEntity> cl);
     <T extends Content> CardDTO<T> getCardById(Class<? extends OmegaEntity> cl, int contentId);
+    public  <T extends Content> List<CardDTO<T>> getCards(Class<? extends OmegaEntity> cl, SqlRowSet sqlRowSet);
     int nextVal(String seq);
 
 

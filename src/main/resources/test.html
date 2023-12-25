@@ -34,10 +34,10 @@
             let cont = {
                 "content": {
                     "id": 0,
-                    "title": "title",
-                    "description": "desct';--",
-                    "posterPath": "//",
-                    "seriesNum": 123
+                    "title": "t",
+                    "description": "desct",
+                    "posterPath": "path",
+                    "isColored": true
                 },
                 "studio": "studio name",
                 "tags": [
@@ -52,6 +52,7 @@
                 ]
             }
             const json = JSON.stringify(cont);
+            console.log(json);
             const blob = new Blob([json], {
                 type: 'application/json'
             });
@@ -60,9 +61,9 @@
                 file : formData
             }
             // Perform a POST request to save the image
-            fetch('http://localhost:27401/api/creator/add/anime', {
+            fetch('http://localhost:27401/api/creator/add/comic', {
                 method: 'POST',
-                headers : {'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDM0NTEwNTksImV4cCI6MTcwMzUzNzQ1OSwic3ViIjoib21lZ2EifQ.dyBgnv1dU_GLaj2WkYNjFho06N5XOmVpHHSaDEuZrIUqOYr5EubBVrm_NmmCUTAmT8skuTVrMwLB6L8RP3mreA'},
+                headers : {'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDM1MDExMzEsImV4cCI6MTcwMzU4NzUzMSwic3ViIjoib21lZ2EifQ.X0-PocJUy5QUIN_WuWDaZurhSmYDCRPHQuVk9HkJpli2avk69fJbcbVKzQZB1SChbjiBEr3V5tyHYWieTgsywA'},
                 body: formData
             })
                 .then(response => response.json())

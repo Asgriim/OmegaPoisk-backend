@@ -42,12 +42,18 @@ public class SecurityConf {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http
-                .cors(AbstractHttpConfigurer::disable)
-                .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests((authz) -> authz.requestMatchers("auth/*","test/*", "api/**").permitAll())
+                .cors(cors -> cors.disable())
+                .csrf(cs -> cs.disable())
                 .addFilterBefore(filter(), UsernamePasswordAuthenticationFilter.class)
-                .authorizeHttpRequests(authz -> authz.requestMatchers("api/creator/*").hasAnyAuthority("ADMIN","CREATOR"))
-                ;
+                .authorizeHttpRequests(authz -> authz.requestMatchers("auth/*","test/*", "api/read/**")
+                        .permitAll()
+
+                        .requestMatchers("api/creator/**","api/creator/add/*" )
+                                .authenticated()
+//                                .permitAll()
+//                        .authenticated()
+
+                        );
 
         return http.build();
     }
@@ -62,7 +68,9 @@ public class SecurityConf {
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**").allowedOriginPatterns("*")
                         .allowedMethods("*")
+                        .allowedHeaders("Authorization", "Cache-Control", "Content-Type")
                         .allowedHeaders("*")
+                        .allowedOrigins(null,"null")
                         .allowCredentials(true);
             }
         };

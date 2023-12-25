@@ -52,4 +52,8 @@ public class ContentService {
     public <T extends Content> List<CardDTO<T>> getAllCardsOfContent(Class<? extends OmegaEntity> cl) {
         return contentRepository.getAllCards(cl);
     }
+
+    public <T extends Content> List<CardDTO<T>> getOwnerCards(Class<? extends OmegaEntity> cl, int userId) {
+        return contentRepository.getOwnerCards(cl, userId);
+    }
 }

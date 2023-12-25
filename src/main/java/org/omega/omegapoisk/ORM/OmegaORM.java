@@ -77,7 +77,8 @@ public class OmegaORM implements ORM{
         return omegaEntities;
     }
 
-    private  <T extends Content> List<CardDTO<T>> getCards(Class<? extends OmegaEntity> cl, SqlRowSet sqlRowSet) {
+    @Override
+    public  <T extends Content> List<CardDTO<T>> getCards(Class<? extends OmegaEntity> cl, SqlRowSet sqlRowSet) {
         List<CardDTO<T>> cards = new ArrayList<>();
         try {
             List<Field> fieldsOfClass = getFieldsOfClass(cl);

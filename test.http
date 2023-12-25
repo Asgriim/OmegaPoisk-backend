@@ -1,15 +1,15 @@
 POST localhost:27401/auth/login
 Content-Type: application/json
 
-{"id":0,"login":"omega","email":"","pass":"omega","role":"USER","token":""}
+{"id":0,"login":"omega2","email":"","pass":"omega","role":"USER","token":""}
 
 ###
 GET localhost:27401/api/read/tv_show
 
 
 ####
-GET localhost:27401/test/file
-Authorization:Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDMyNTg4MzgsImV4cCI6MTcwMzM0NTIzOCwic3ViIjoiYWJvYmEifQ.3gnvuU-iO1ZmItmRA68TrC3jWla1jYFxLVc8uNQt0EMu_8KNJqbYVopOehUt6-GToyeBZS6oVGSVSuD9EU9u-w
+GET localhost:27401/api/creator/read/anime
+Authorization:Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDM1MDExMzEsImV4cCI6MTcwMzU4NzUzMSwic3ViIjoib21lZ2EifQ.X0-PocJUy5QUIN_WuWDaZurhSmYDCRPHQuVk9HkJpli2avk69fJbcbVKzQZB1SChbjiBEr3V5tyHYWieTgsywA
 
 ###
 GET localhost:27401/api/read/comic
@@ -24,3 +24,32 @@ GET localhost:27401/test/add
 
 ###
 GET localhost:27401/api/read/anime/7
+
+
+###
+GET localhost:27401/test/comic
+
+###
+GET localhost:27401/test/anime
+Content-Type: application/json
+
+{
+  "content": {
+    "id": 0,
+    "title": "t",
+    "description": "desct",
+    "posterPath": "path",
+    "isColored": true
+  },
+  "studio": "studio name",
+  "tags": [
+    {
+      "id": 1,
+      "name": "GOVNO"
+    },
+    {
+      "id": 2,
+      "name": "PENIS"
+    }
+  ]
+}

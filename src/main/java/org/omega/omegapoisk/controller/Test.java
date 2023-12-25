@@ -5,6 +5,7 @@ import org.omega.omegapoisk.data.CardDTO;
 import org.omega.omegapoisk.data.ContentPageDTO;
 import org.omega.omegapoisk.entity.Anime;
 import org.omega.omegapoisk.entity.Comic;
+import org.omega.omegapoisk.entity.Game;
 import org.omega.omegapoisk.entity.User;
 import org.omega.omegapoisk.repository.ContentRepository;
 import org.omega.omegapoisk.service.ContentService;
@@ -36,16 +37,16 @@ public class Test {
     }
 
     @GetMapping("/anime")
-    public ResponseEntity<?> anime() {
+    public ResponseEntity<?> anime(@RequestBody AddContentDTO<Comic> comic) {
 //        System.out.println(contentService.getContentTags(2));
-        ContentPageDTO<Anime> animeContentDTO = new ContentPageDTO<>();
-        Anime anime = new Anime();
-        anime.setId(1);
-        anime.setSeriesNum(1);
-        anime.setDescription("desc");
-        anime.setTitle("title");
-        animeContentDTO.setContent(anime);
-        return ResponseEntity.ok(animeContentDTO);
+//        ContentPageDTO<Anime> animeContentDTO = new ContentPageDTO<>();
+//        Anime anime = new Anime();
+//        anime.setId(1);
+//        anime.setSeriesNum(1);
+//        anime.setDescription("desc");
+//        anime.setTitle("title");
+//        animeContentDTO.setContent(anime);
+        return ResponseEntity.ok(comic);
     }
 
     @PostMapping("/file")
@@ -64,6 +65,16 @@ public class Test {
         AddContentDTO<Anime> animeAddContentDTO = new AddContentDTO<>();
         animeAddContentDTO.setStudio("studio name");
         animeAddContentDTO.setContent(new Anime(123));
+        animeAddContentDTO.setTags(contentService.getAllTags());
+        return ResponseEntity.ok(animeAddContentDTO);
+    }
+
+
+    @GetMapping("/comic")
+    public ResponseEntity<?> com() {
+        AddContentDTO<Comic> animeAddContentDTO = new AddContentDTO<>();
+        animeAddContentDTO.setStudio("studio name");
+        animeAddContentDTO.setContent(new Comic(true));
         animeAddContentDTO.setTags(contentService.getAllTags());
         return ResponseEntity.ok(animeAddContentDTO);
     }

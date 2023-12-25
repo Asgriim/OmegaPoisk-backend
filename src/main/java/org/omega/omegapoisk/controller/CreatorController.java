@@ -3,15 +3,13 @@ package org.omega.omegapoisk.controller;
 import lombok.RequiredArgsConstructor;
 import org.omega.omegapoisk.data.AddContentDTO;
 import org.omega.omegapoisk.entity.*;
+import org.omega.omegapoisk.exception.AccessDeniedException;
 import org.omega.omegapoisk.service.ContentService;
 import org.omega.omegapoisk.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
@@ -21,10 +19,18 @@ public class CreatorController {
     private final UserService userService;
     private final ContentService contentService;
 
+    private void checkUser(User user) {
+        if (user.getRoles().get(0).equals(Role.USER))  {
+            throw new AccessDeniedException();
+        }
+    }
+
     @PostMapping("/add/anime")
     public ResponseEntity<?> addAnime(@RequestPart("json") AddContentDTO<Anime> contentDTO, @RequestPart("image") MultipartFile file) {
+        System.out.println("add anime");
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.loadUserByUsername(userDetails.getUsername());
+        checkUser(user);
         System.out.println(user.getUsername());
         contentService.addAnime(contentDTO, file, user);
         return ResponseEntity.ok("ok");
@@ -32,8 +38,11 @@ public class CreatorController {
 
     @PostMapping("/add/comic")
     public ResponseEntity<?> addComic(@RequestPart("json") AddContentDTO<Comic> contentDTO, @RequestPart("image") MultipartFile file) {
+        System.out.println("add comic");
+        System.out.println(contentDTO.getContent());
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.loadUserByUsername(userDetails.getUsername());
+        checkUser(user);
         System.out.println(user.getUsername());
         contentService.addComic(contentDTO, file, user);
         return ResponseEntity.ok("ok");
@@ -41,8 +50,10 @@ public class CreatorController {
 
     @PostMapping("/add/game")
     public ResponseEntity<?> addGame(@RequestPart("json") AddContentDTO<Game> contentDTO, @RequestPart("image") MultipartFile file) {
+        System.out.println("add game");
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.loadUserByUsername(userDetails.getUsername());
+        checkUser(user);
         System.out.println(user.getUsername());
         contentService.addGame(contentDTO, file, user);
         return ResponseEntity.ok("ok");
@@ -52,6 +63,7 @@ public class CreatorController {
     public ResponseEntity<?> addTVShow(@RequestPart("json") AddContentDTO<TvShow> contentDTO, @RequestPart("image") MultipartFile file) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.loadUserByUsername(userDetails.getUsername());
+        checkUser(user);
         System.out.println(user.getUsername());
         contentService.addTvShow(contentDTO, file, user);
         return ResponseEntity.ok("ok");
@@ -62,9 +74,64 @@ public class CreatorController {
     public ResponseEntity<?> addMovie(@RequestPart("json") AddContentDTO<Movie> contentDTO, @RequestPart("image") MultipartFile file) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.loadUserByUsername(userDetails.getUsername());
+        checkUser(user);
         System.out.println(user.getUsername());
         contentService.addMovie(contentDTO, file, user);
         return ResponseEntity.ok("ok");
     }
 
+    @GetMapping("/read/anime")
+    public ResponseEntity<?> readOwnerAnime() {
+        System.out.println("read anime");
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.loadUserByUsername(userDetails.getUsername());
+        checkUser(user);
+        Class cl = Anime.class;
+        if (user.getRoles().get(0).equals(Role.ADMIN)) {
+//            return ResponseEntity.ok("admin");
+            return ResponseEntity.ok(contentService.getAllCardsOfContent(cl));
+        }
+        return ResponseEntity.ok(contentService.getOwnerCards(cl, user.getId()));
+    }
+
+    @GetMapping("/read/comic")
+    public ResponseEntity<?> readOwnerComic() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.loadUserByUsername(userDetails.getUsername());
+        checkUser(user);
+        Class cl = Comic.class;
+        if (user.getRoles().get(0).equals(Role.ADMIN)) {
+//            return ResponseEntity.ok("admin");
+            return ResponseEntity.ok(contentService.getAllCardsOfContent(cl));
+        }
+        return ResponseEntity.ok(contentService.getOwnerCards(cl, user.getId()));
+    }
+
+
+    @GetMapping("/read/game")
+    public ResponseEntity<?> readOwnerGame() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.loadUserByUsername(userDetails.getUsername());
+        checkUser(user);
+        Class cl = Game.class;
+        if (user.getRoles().get(0).equals(Role.ADMIN)) {
+//            return ResponseEntity.ok("admin");
+            return ResponseEntity.ok(contentService.getAllCardsOfContent(cl));
+        }
+        return ResponseEntity.ok(contentService.getOwnerCards(cl, user.getId()));
+    }
+
+
+    @GetMapping("/read/movie")
+    public ResponseEntity<?> readOwnerMovie() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.loadUserByUsername(userDetails.getUsername());
+        checkUser(user);
+        Class cl = Movie.class;
+        if (user.getRoles().get(0).equals(Role.ADMIN)) {
+//            return ResponseEntity.ok("admin");
+            return ResponseEntity.ok(contentService.getAllCardsOfContent(cl));
+        }
+        return ResponseEntity.ok(contentService.getOwnerCards(cl, user.getId()));
+    }
 }

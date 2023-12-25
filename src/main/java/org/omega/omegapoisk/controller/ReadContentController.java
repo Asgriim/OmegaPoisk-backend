@@ -15,6 +15,8 @@ import java.util.List;
 public class ReadContentController {
     private final ContentService contentService;
 
+
+
     @GetMapping("/anime")
     public ResponseEntity<?> anime() {
         System.out.println("anime call");
