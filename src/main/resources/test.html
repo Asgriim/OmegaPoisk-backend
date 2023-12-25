@@ -63,7 +63,7 @@
             // Perform a POST request to save the image
             fetch('http://localhost:27401/api/creator/add/comic', {
                 method: 'POST',
-                headers : {'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDM1MDExMzEsImV4cCI6MTcwMzU4NzUzMSwic3ViIjoib21lZ2EifQ.X0-PocJUy5QUIN_WuWDaZurhSmYDCRPHQuVk9HkJpli2avk69fJbcbVKzQZB1SChbjiBEr3V5tyHYWieTgsywA'},
+                // headers : {'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDM1MDExMzEsImV4cCI6MTcwMzU4NzUzMSwic3ViIjoib21lZ2EifQ.X0-PocJUy5QUIN_WuWDaZurhSmYDCRPHQuVk9HkJpli2avk69fJbcbVKzQZB1SChbjiBEr3V5tyHYWieTgsywA'},
                 body: formData
             })
                 .then(response => response.json())

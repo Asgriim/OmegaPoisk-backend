@@ -45,13 +45,9 @@ public class SecurityConf {
                 .cors(cors -> cors.disable())
                 .csrf(cs -> cs.disable())
                 .addFilterBefore(filter(), UsernamePasswordAuthenticationFilter.class)
-                .authorizeHttpRequests(authz -> authz.requestMatchers("auth/*","test/*", "api/read/**")
+                .authorizeHttpRequests(authz -> authz.requestMatchers("auth/*","test/*", "api/**")
                         .permitAll()
 
-                        .requestMatchers("api/creator/**","api/creator/add/*" )
-                                .authenticated()
-//                                .permitAll()
-//                        .authenticated()
 
                         );
 
