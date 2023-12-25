@@ -156,8 +156,9 @@ public class ContentRepository {
         String req = String.format("select * from %s join owner_of_content on owner_of_content.contentid = %s\n" +
                 "    left join content_tags on content_tags.contentid = %s\n" +
                 "                    left join tags ON tags.id = content_tags.tagid\n" +
-                "                    left join avg_rating ON avg_rating.contentid = content_tags.contentid where owner_of_content.userid = %s order by anime.id;",
-                table, tbId, tbId, userId);
+                "                    left join avg_rating ON avg_rating.contentid = content_tags.contentid where owner_of_content.userid = %s order by %s",
+                table, tbId, tbId, userId, tbId);
+        System.out.println(req);
         SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(req);
         return omegaORM.getCards(cl,sqlRowSet);
     }

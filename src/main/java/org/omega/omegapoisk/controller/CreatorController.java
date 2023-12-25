@@ -134,4 +134,9 @@ public class CreatorController {
         }
         return ResponseEntity.ok(contentService.getOwnerCards(cl, user.getId()));
     }
+
+
+
+
 }
+

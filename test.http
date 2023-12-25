@@ -8,7 +8,7 @@ GET localhost:27401/api/read/tv_show
 
 
 ####
-GET localhost:27401/api/creator/read/anime
+GET localhost:27401/api/creator/read/movie
 Authorization:Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDM1MDExMzEsImV4cCI6MTcwMzU4NzUzMSwic3ViIjoib21lZ2EifQ.X0-PocJUy5QUIN_WuWDaZurhSmYDCRPHQuVk9HkJpli2avk69fJbcbVKzQZB1SChbjiBEr3V5tyHYWieTgsywA
 
 ###

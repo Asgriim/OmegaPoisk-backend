@@ -163,3 +163,32 @@ $$ LANGUAGE plpgsql;
 CREATE OR REPLACE TRIGGER add_rate
     AFTER INSERT ON rating
     FOR EACH ROW EXECUTE PROCEDURE calc_avg_rate();
+
+
+CREATE OR REPLACE FUNCTION remove_from_content()
+    RETURNS TRIGGER AS $$
+BEGIN
+    DELETE FROM content
+    WHERE (OLD.id = content.id);
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER remove_anime_trig
+    AFTER DELETE ON anime
+    FOR EACH ROW EXECUTE PROCEDURE remove_from_content();
+
+CREATE OR REPLACE TRIGGER remove_comic_trig
+    AFTER DELETE ON comic
+    FOR EACH ROW EXECUTE PROCEDURE remove_from_content();
+
+CREATE OR REPLACE TRIGGER remove_game_trig
+    AFTER DELETE ON game
+    FOR EACH ROW EXECUTE PROCEDURE remove_from_content();
+
+CREATE OR REPLACE TRIGGER remove_movie_trig
+    AFTER DELETE ON movie
+    FOR EACH ROW EXECUTE PROCEDURE remove_from_content();
+
+CREATE OR REPLACE TRIGGER remove_tb_show_trig
+    AFTER DELETE ON tv_show
+    FOR EACH ROW EXECUTE PROCEDURE remove_from_content();
