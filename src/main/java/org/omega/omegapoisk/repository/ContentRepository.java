@@ -161,4 +161,15 @@ public class ContentRepository {
         SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(req);
         return omegaORM.getCards(cl,sqlRowSet);
     }
+
+
+    public Studio getStudioByContentId(int id) {
+        SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet("select * from studio_contents join studio on studio_contents.studioid = studio.id where contentid = ?", id);
+        List<Studio> listFromRowSet = (List<Studio>) omegaORM.getListFromRowSet(Studio.class, sqlRowSet);
+        if (listFromRowSet.isEmpty()) {
+            return null;
+        }
+        return listFromRowSet.get(0);
+
+    }
 }

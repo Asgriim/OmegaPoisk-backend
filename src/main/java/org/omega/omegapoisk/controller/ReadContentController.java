@@ -80,4 +80,15 @@ public class ReadContentController {
     public ResponseEntity<?> getAllTags() {
         return ResponseEntity.ok(contentService.getAllTags());
     }
+
+
+    @GetMapping("/content/studio/{id}")
+    public ResponseEntity<?> getStudioByContentId (@PathVariable int id) {
+        Studio studio = contentService.getStudioByContentId(id);
+        if (studio == null) {
+            return ResponseEntity.badRequest().body("No studio found");
+        }
+        return ResponseEntity.ok(studio);
+
+    }
 }
