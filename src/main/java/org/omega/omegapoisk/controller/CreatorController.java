@@ -149,6 +149,63 @@ public class CreatorController {
     }
 
 
+    private <T extends OmegaEntity> void delCont(Class<T> cl, User user, int id) {
+        checkUser(user);
+        System.out.println(user.getRoles().get(0));
+        if (user.getRoles().get(0).equals(Role.ADMIN)) {
+            contentService.deleteContentById(cl,id);
+            return;
+        }
+        else {
+            if (contentService.checkOwner(user,id)) {
+                contentService.deleteContentById(cl,id);
+                return;
+            }
+        }
+        throw new AccessDeniedException() ;
+    }
+
+    @PostMapping("/del/anime/{id}")
+    public ResponseEntity<?> delAnime(@PathVariable int id) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.loadUserByUsername(userDetails.getUsername());
+        delCont(Anime.class, user, id);
+        return ResponseEntity.ok("");
+    }
+
+    @PostMapping("/del/movie/{id}")
+    public ResponseEntity<?> delMovie(@PathVariable int id) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.loadUserByUsername(userDetails.getUsername());
+        delCont(Movie.class, user, id);
+        return ResponseEntity.ok("");
+    }
+
+
+    @PostMapping("/del/comic/{id}")
+    public ResponseEntity<?> delComic(@PathVariable int id) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.loadUserByUsername(userDetails.getUsername());
+        delCont(Comic.class, user, id);
+        return ResponseEntity.ok("");
+    }
+
+    @PostMapping("/del/tv_show/{id}")
+    public ResponseEntity<?> delTvShow(@PathVariable int id) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.loadUserByUsername(userDetails.getUsername());
+        delCont(TvShow.class, user, id);
+        return ResponseEntity.ok("");
+    }
+
+    @PostMapping("/del/game/{id}")
+    public ResponseEntity<?> delGame(@PathVariable int id) {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.loadUserByUsername(userDetails.getUsername());
+        delCont(Game.class, user, id);
+        return ResponseEntity.ok("");
+    }
+
 
 
 }

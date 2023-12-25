@@ -4,11 +4,17 @@ Content-Type: application/json
 {"id":0,"login":"omega2","email":"","pass":"omega","role":"USER","token":""}
 
 ###
+POST localhost:27401/auth/register
+Content-Type: application/json
+
+{"id":0,"login":"oasdasdasd","email":"","pass":"asddsad","role":"USER","token":""}
+
+###
 GET localhost:27401/api/read/tv_show
 
 
 ####
-GET localhost:27401/api/creator/read/tv_show
+GET localhost:27401/api/creator/read/anime
 Authorization:Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDM1MDExMzEsImV4cCI6MTcwMzU4NzUzMSwic3ViIjoib21lZ2EifQ.X0-PocJUy5QUIN_WuWDaZurhSmYDCRPHQuVk9HkJpli2avk69fJbcbVKzQZB1SChbjiBEr3V5tyHYWieTgsywA
 
 ###
@@ -23,7 +29,7 @@ GET localhost:27401/api/read/all_tags
 GET localhost:27401/test/add
 
 ###
-GET localhost:27401/api/read/anime/7
+GET localhost:27401/api/read/anime/2
 
 
 ###
@@ -56,3 +62,10 @@ Content-Type: application/json
     }
   ]
 }
+
+
+###
+
+
+POST localhost:27401/api/creator/del/anime/2
+Authorization:Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDM1MDExMzEsImV4cCI6MTcwMzU4NzUzMSwic3ViIjoib21lZ2EifQ.X0-PocJUy5QUIN_WuWDaZurhSmYDCRPHQuVk9HkJpli2avk69fJbcbVKzQZB1SChbjiBEr3V5tyHYWieTgsywA

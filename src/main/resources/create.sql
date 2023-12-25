@@ -170,6 +170,7 @@ CREATE OR REPLACE FUNCTION remove_from_content()
 BEGIN
     DELETE FROM content
     WHERE (OLD.id = content.id);
+    RETURN OLD;
 END;
 $$ LANGUAGE plpgsql;
 

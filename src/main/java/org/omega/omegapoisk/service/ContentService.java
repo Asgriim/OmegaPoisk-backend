@@ -61,4 +61,13 @@ public class ContentService {
     public Studio getStudioByContentId(int id) {
         return contentRepository.getStudioByContentId(id);
     }
+
+    public <T extends OmegaEntity> void deleteContentById(Class<T> cl, int id) {
+        contentRepository.deleteContentById(cl, id);
+    }
+
+
+    public boolean checkOwner(User user, int contentId) {
+        return contentRepository.checkOwner(user,contentId);
+    }
 }

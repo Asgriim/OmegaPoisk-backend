@@ -173,4 +173,19 @@ public class ContentRepository {
         return listFromRowSet.get(0);
 
     }
+
+
+    public boolean checkOwner(User user, int contentId) {
+        Integer i = jdbcTemplate.queryForObject("select count(*) from owner_of_content where contentid = ? and userid = ?", Integer.class, contentId, user.getId());
+        return i > 0;
+    }
+
+    public <T extends OmegaEntity> void deleteContentById(Class<T> cl, int id) {
+        String tableName = omegaORM.getTableName(cl);
+        String tbId = tableName + ".id";
+        String query = String.format("delete from %s where %s = %s", tableName, tbId,id);
+        System.out.println(query);
+        jdbcTemplate.update(query);
+
+    }
 }
