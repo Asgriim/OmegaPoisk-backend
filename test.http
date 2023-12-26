@@ -1,7 +1,7 @@
 POST localhost:27401/auth/login
 Content-Type: application/json
 
-{"id":0,"login":"omega2","email":"","pass":"omega","role":"USER","token":""}
+{"id":0,"login":"omega","email":"","pass":"omega","role":"USER","token":""}
 
 ###
 POST localhost:27401/auth/register
@@ -14,8 +14,8 @@ GET localhost:27401/api/read/tv_show
 
 
 ####
-GET localhost:27401/api/creator/read/anime
-Authorization:Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDM1MDExMzEsImV4cCI6MTcwMzU4NzUzMSwic3ViIjoib21lZ2EifQ.X0-PocJUy5QUIN_WuWDaZurhSmYDCRPHQuVk9HkJpli2avk69fJbcbVKzQZB1SChbjiBEr3V5tyHYWieTgsywA
+GET localhost:27401/api/creator/read/comic
+Authorization:Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDM2MDE1MjEsImV4cCI6MTcwMzY4NzkyMSwic3ViIjoib21lZ2EifQ.0dfF8shd5SA7_o7xEhmQ8RPujtBQY0p3FvUdnzIFDEegIhFymaXdsokEM1Md-RbMnHH3WaqnlIbR-xNdU3LNfw
 
 ###
 GET localhost:27401/api/read/comic
@@ -65,7 +65,10 @@ Content-Type: application/json
 
 
 ###
-
-
-POST localhost:27401/api/creator/del/anime/2
+POST localhost:27401/api/creator/del/comic/44
 Authorization:Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDM1MDExMzEsImV4cCI6MTcwMzU4NzUzMSwic3ViIjoib21lZ2EifQ.X0-PocJUy5QUIN_WuWDaZurhSmYDCRPHQuVk9HkJpli2avk69fJbcbVKzQZB1SChbjiBEr3V5tyHYWieTgsywA
+
+###
+
+POST localhost:27401/test/upd
+Authorization:Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDM2MDE1MjEsImV4cCI6MTcwMzY4NzkyMSwic3ViIjoib21lZ2EifQ.0dfF8shd5SA7_o7xEhmQ8RPujtBQY0p3FvUdnzIFDEegIhFymaXdsokEM1Md-RbMnHH3WaqnlIbR-xNdU3LNfw

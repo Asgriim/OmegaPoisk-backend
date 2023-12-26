@@ -3,14 +3,14 @@ package org.omega.omegapoisk.controller;
 import org.omega.omegapoisk.data.AddContentDTO;
 import org.omega.omegapoisk.data.CardDTO;
 import org.omega.omegapoisk.data.ContentPageDTO;
-import org.omega.omegapoisk.entity.Anime;
-import org.omega.omegapoisk.entity.Comic;
-import org.omega.omegapoisk.entity.Game;
-import org.omega.omegapoisk.entity.User;
+import org.omega.omegapoisk.entity.*;
 import org.omega.omegapoisk.repository.ContentRepository;
 import org.omega.omegapoisk.service.ContentService;
+import org.omega.omegapoisk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +23,10 @@ import java.util.List;
 @RestController
 @RequestMapping("test")
 public class Test {
+
+    @Autowired
+    UserService userService;
+
 
     @Autowired
     ContentService contentService;
@@ -77,5 +81,20 @@ public class Test {
         animeAddContentDTO.setContent(new Comic(true));
         animeAddContentDTO.setTags(contentService.getAllTags());
         return ResponseEntity.ok(animeAddContentDTO);
+    }
+
+
+
+    @PostMapping("/upd")
+    public ResponseEntity<?> upd() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.loadUserByUsername(userDetails.getUsername());
+        AddContentDTO<Movie> movieAddContentDTO = new AddContentDTO<>();
+        movieAddContentDTO.setContent(new Movie(123));
+        movieAddContentDTO.setStudio("asr");
+        contentRepository.updateContent(movieAddContentDTO, null,user);
+//        contentRepository.deleteContentTags(contentRepository.getAllTags()
+//        ,72);
+        return ResponseEntity.ok("");
     }
 }

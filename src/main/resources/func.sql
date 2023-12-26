@@ -35,6 +35,13 @@ BEGIN
     insert into studio_contents(studioid, contentid)
         VALUES (create_studio_if_not_exist(_studio_name), _content_id);
 
+    perform add_to_history(
+            _user_id,
+            _content_id,
+            _title,
+            _description,
+            _poster_path);
+
 END;
 $$ LANGUAGE plpgsql;
 
@@ -60,6 +67,13 @@ BEGIN
     insert into studio_contents(studioid, contentid)
     VALUES (create_studio_if_not_exist(_studio_name), _content_id);
 
+    perform add_to_history(
+            _user_id,
+            _content_id,
+            _title,
+            _description,
+            _poster_path);
+
 END;
 $$ LANGUAGE plpgsql;
 
@@ -83,6 +97,13 @@ BEGIN
 
     insert into studio_contents(studioid, contentid)
     VALUES (create_studio_if_not_exist(_studio_name), _content_id);
+
+    perform add_to_history(
+            _user_id,
+            _content_id,
+            _title,
+            _description,
+            _poster_path);
 
 END;
 $$ LANGUAGE plpgsql;
@@ -109,6 +130,14 @@ BEGIN
     insert into studio_contents(studioid, contentid)
     VALUES (create_studio_if_not_exist(_studio_name), _content_id);
 
+
+    perform add_to_history(
+            _user_id,
+            _content_id,
+            _title,
+            _description,
+            _poster_path);
+
 END;
 $$ LANGUAGE plpgsql;
 
@@ -132,5 +161,184 @@ BEGIN
     insert into studio_contents(studioid, contentid)
     VALUES (create_studio_if_not_exist(_studio_name), _content_id);
 
+
+    perform add_to_history(
+            _user_id,
+            _content_id,
+            _title,
+            _description,
+            _poster_path);
+
 END;
 $$ LANGUAGE plpgsql;
+
+
+--
+--
+-- HISTORY FUNCS
+--
+--
+
+CREATE OR REPLACE FUNCTION add_to_history(_user_id INT, _content_id INT, _title TEXT, _description TEXT, _posterpath TEXT)
+    RETURNS VOID AS $$
+BEGIN
+    INSERT INTO history(userid, contentid, title, description, posterpath, date) values (_user_id, _content_id,_title,_description, _posterpath ,current_timestamp);
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+
+CREATE OR REPLACE FUNCTION update_anime(_user_id INT,
+                                         _content_id INT,
+                                         _title TEXT,
+                                         _description TEXT,
+                                         _poster_path TEXT,
+                                         _series_num INT
+                                        )
+    RETURNS VOID AS $$
+BEGIN
+    UPDATE anime
+    SET title = _title,
+        description =  _description,
+        posterpath = _poster_path,
+        seriesNum = _series_num
+    WHERE id = _content_id;
+
+    perform add_to_history(
+        _user_id,
+        _content_id,
+        _title,
+        _description,
+        _poster_path);
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+
+
+CREATE OR REPLACE FUNCTION update_comic(_user_id INT,
+                                        _content_id INT,
+                                        _title TEXT,
+                                        _description TEXT,
+                                        _poster_path TEXT,
+                                        _isColored BOOL
+)
+    RETURNS VOID AS $$
+BEGIN
+    UPDATE comic
+    SET title = _title,
+        description =  _description,
+        posterpath = _poster_path,
+        iscolored = _isColored
+    WHERE id = _content_id;
+
+    perform add_to_history(
+            _user_id,
+            _content_id,
+            _title,
+            _description,
+            _poster_path);
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION update_game(_user_id INT,
+                                        _content_id INT,
+                                        _title TEXT,
+                                        _description TEXT,
+                                        _poster_path TEXT,
+                                        _isFree BOOL
+)
+    RETURNS VOID AS $$
+BEGIN
+    UPDATE game
+    SET title = _title,
+        description =  _description,
+        posterpath = _poster_path,
+        isfree = _isFree
+    WHERE id = _content_id;
+
+    perform add_to_history(
+            _user_id,
+            _content_id,
+            _title,
+            _description,
+            _poster_path);
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION update_movie(_user_id INT,
+                                       _content_id INT,
+                                       _title TEXT,
+                                       _description TEXT,
+                                       _poster_path TEXT,
+                                       _duration INT
+)
+    RETURNS VOID AS $$
+BEGIN
+    UPDATE movie
+    SET title = _title,
+        description =  _description,
+        posterpath = _poster_path,
+        duration = _duration
+    WHERE id = _content_id;
+
+    perform add_to_history(
+            _user_id,
+            _content_id,
+            _title,
+            _description,
+            _poster_path);
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION update_tv_show(_user_id INT,
+                                        _content_id INT,
+                                        _title TEXT,
+                                        _description TEXT,
+                                        _poster_path TEXT,
+                                        _seriesNum INT
+)
+    RETURNS VOID AS $$
+BEGIN
+    UPDATE tv_show
+    SET title = _title,
+        description =  _description,
+        posterpath = _poster_path,
+        seriesnum = _seriesNum
+    WHERE id = _content_id;
+
+    perform add_to_history(
+            _user_id,
+            _content_id,
+            _title,
+            _description,
+            _poster_path);
+END;
+$$ LANGUAGE plpgsql;
+
+
+
+CREATE OR REPLACE FUNCTION update_content_studio(
+                                          _content_id INT,
+                                          _studio_name TEXT
+)
+
+    RETURNS VOID AS $$
+    DECLARE
+        stid INT;
+    BEGIN
+        delete from studio_contents where studio_contents.contentid = _content_id;
+        stid := create_studio_if_not_exist(_studio_name);
+        insert into studio_contents(studioid, contentid) VALUES (stid, _content_id);
+    END;
+$$ LANGUAGE plpgsql;
+

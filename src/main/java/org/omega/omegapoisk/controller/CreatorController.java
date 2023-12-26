@@ -86,7 +86,7 @@ public class CreatorController {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.loadUserByUsername(userDetails.getUsername());
         checkUser(user);
-        Class cl = Anime.class;
+        Class<Anime> cl = Anime.class;
         if (user.getRoles().get(0).equals(Role.ADMIN)) {
 //            return ResponseEntity.ok("admin");
             return ResponseEntity.ok(contentService.getAllCardsOfContent(cl));
@@ -99,7 +99,7 @@ public class CreatorController {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.loadUserByUsername(userDetails.getUsername());
         checkUser(user);
-        Class cl = Comic.class;
+        Class<Comic> cl = Comic.class;
         if (user.getRoles().get(0).equals(Role.ADMIN)) {
 //            return ResponseEntity.ok("admin");
             return ResponseEntity.ok(contentService.getAllCardsOfContent(cl));
@@ -113,7 +113,7 @@ public class CreatorController {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.loadUserByUsername(userDetails.getUsername());
         checkUser(user);
-        Class cl = Game.class;
+        Class<Game> cl = Game.class;
         if (user.getRoles().get(0).equals(Role.ADMIN)) {
 //            return ResponseEntity.ok("admin");
             return ResponseEntity.ok(contentService.getAllCardsOfContent(cl));
@@ -140,7 +140,7 @@ public class CreatorController {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.loadUserByUsername(userDetails.getUsername());
         checkUser(user);
-        Class cl = TvShow.class;
+        Class<TvShow> cl = TvShow.class;
         if (user.getRoles().get(0).equals(Role.ADMIN)) {
 //            return ResponseEntity.ok("admin");
             return ResponseEntity.ok(contentService.getAllCardsOfContent(cl));
@@ -207,6 +207,48 @@ public class CreatorController {
     }
 
 
+    private <T extends Content> void updateContent(AddContentDTO<T> contentDTO, MultipartFile file) {
+        System.out.println("update");
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.loadUserByUsername(userDetails.getUsername());
+        checkUser(user);
+        if (user.getRoles().get(0).equals(Role.CREATOR)) {
+            if (!contentService.checkOwner(user,contentDTO.getContent().getId())) {
+                throw new AccessDeniedException();
+            }
+        }
+        contentService.updateContent(contentDTO, file, user);
+    }
+
+    @PostMapping("/update/anime")
+    public ResponseEntity<?> updateAnime(@RequestPart("json") AddContentDTO<Anime> contentDTO, @RequestPart("image") MultipartFile file) {
+        updateContent(contentDTO, file);
+        return ResponseEntity.ok("");
+    }
+
+    @PostMapping("/update/comic")
+    public ResponseEntity<?> updateComic(@RequestPart("json") AddContentDTO<Comic> contentDTO, @RequestPart("image") MultipartFile file) {
+        updateContent(contentDTO, file);
+        return ResponseEntity.ok("");
+    }
+
+    @PostMapping("/update/movie")
+    public ResponseEntity<?> updateMovie(@RequestPart("json") AddContentDTO<Movie> contentDTO, @RequestPart("image") MultipartFile file) {
+        updateContent(contentDTO, file);
+        return ResponseEntity.ok("");
+    }
+
+    @PostMapping("/update/game")
+    public ResponseEntity<?> updateGame(@RequestPart("json") AddContentDTO<Game> contentDTO, @RequestPart("image") MultipartFile file) {
+        updateContent(contentDTO, file);
+        return ResponseEntity.ok("");
+    }
+
+    @PostMapping("/update/tv_show")
+    public ResponseEntity<?> updateTvShow(@RequestPart("json") AddContentDTO<TvShow> contentDTO, @RequestPart("image") MultipartFile file) {
+        updateContent(contentDTO, file);
+        return ResponseEntity.ok("");
+    }
 
 }
 

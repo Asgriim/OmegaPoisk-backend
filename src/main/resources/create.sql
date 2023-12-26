@@ -117,6 +117,21 @@ CREATE TABLE IF NOT EXISTS studio_contents (
                                                FOREIGN KEY (contentId) REFERENCES content(id) ON DELETE CASCADE
                                            );
 
+-- Таблица history
+CREATE TABLE IF NOT EXISTS history (
+                                       id SERIAL PRIMARY KEY,
+                                       userId INT NOT NULL,
+                                       contentId INT NOT NULL,
+                                       date TIMESTAMP,
+                                       title TEXT,
+                                       description TEXT,
+                                       posterPath TEXT,
+                                       FOREIGN KEY (userId) REFERENCES user_ (id) ON DELETE CASCADE ,
+                                       FOREIGN KEY (contentId) REFERENCES content (id) ON DELETE CASCADE
+);
+
+
+
 
 CREATE OR REPLACE FUNCTION add_to_content()
     RETURNS TRIGGER AS $$

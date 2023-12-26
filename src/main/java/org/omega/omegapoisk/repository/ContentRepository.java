@@ -188,4 +188,63 @@ public class ContentRepository {
         jdbcTemplate.update(query);
 
     }
+
+    public void deleteContentTags(List<Tag> tags, int contentId) {
+        String templ = "delete from content_tags where contentid = ? and tagid = ?";
+
+        for (var tag : tags) {
+            jdbcTemplate.update(templ, contentId, tag.getId());
+        }
+
+    }
+
+    public void deleteAllContentTags(int contentId) {
+        String templ = "delete from content_tags where contentid = ?";
+        jdbcTemplate.update(templ, contentId);
+    }
+
+    public void updateContentStudio(String studio, int contentId)  {
+        String req = "select update_content_studio(?,?)";
+        jdbcTemplate.queryForRowSet(req,contentId, studio);
+    }
+
+
+    public <T extends Content> void  updateContent(AddContentDTO<T> contentDTO, MultipartFile file, User user) {
+        try {
+            T content = contentDTO.getContent();
+            String tableName = omegaORM.getTableName((Class<? extends OmegaEntity>) content.getClass());
+            String path;
+            if (file.isEmpty()) {
+                System.out.println("empty file");
+                Content tempE = omegaORM.getEntityById((Class<? extends OmegaEntity>) content.getClass(), content.getId());
+                path = tempE.getPosterPath();
+                System.out.println(path);
+            }
+            else {
+                path = saveFile(file, tableName);
+            }
+            int contentId = content.getId();
+            String query = "select update_"+ tableName +"(" + "?,?,?,?,?,?" + ")";
+            System.out.println(query);
+            Object contentExtraField = omegaORM.getContentExtraField(content);
+            jdbcTemplate.queryForRowSet(query,
+                    user.getId(),
+                    contentId,
+                    content.getTitle(),
+                    content.getDescription(),
+                    path,
+                    contentExtraField
+                    );
+
+            deleteAllContentTags(contentId);
+            addContentTags(contentDTO.getTags(), contentId);
+            updateContentStudio(contentDTO.getStudio(),contentId);
+//            throw new IOException();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+
 }

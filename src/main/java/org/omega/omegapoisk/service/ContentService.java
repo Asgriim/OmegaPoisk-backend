@@ -66,6 +66,9 @@ public class ContentService {
         contentRepository.deleteContentById(cl, id);
     }
 
+    public <T extends Content> void updateContent(AddContentDTO<T> contentDTO, MultipartFile file, User user) {
+        contentRepository.updateContent(contentDTO, file, user);
+    }
 
     public boolean checkOwner(User user, int contentId) {
         return contentRepository.checkOwner(user,contentId);

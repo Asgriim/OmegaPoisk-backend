@@ -26,4 +26,9 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.badRequest().body("You can't access this resource");
     }
 
+    @ExceptionHandler(ClassCastException.class)
+    public ResponseEntity<?> handleCCE() {
+        return ResponseEntity.badRequest().body("You can't access this resource");
+    }
+
 }

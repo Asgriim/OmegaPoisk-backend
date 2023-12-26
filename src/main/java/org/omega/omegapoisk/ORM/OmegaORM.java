@@ -78,6 +78,20 @@ public class OmegaORM implements ORM{
     }
 
     @Override
+    public <T extends OmegaEntity> T getEntityById(Class<? extends OmegaEntity> cl, int id) {
+
+        String templ = "select * from %s where id = %s";
+        String req = String.format(templ,getTableName(cl),id);
+        SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(req);
+        List<T> listFromRowSet = (List<T>) getListFromRowSet(cl, sqlRowSet);
+
+        if (listFromRowSet.isEmpty()) {
+            return null;
+        }
+        return listFromRowSet.get(0);
+    }
+
+    @Override
     public  <T extends Content> List<CardDTO<T>> getCards(Class<? extends OmegaEntity> cl, SqlRowSet sqlRowSet) {
         List<CardDTO<T>> cards = new ArrayList<>();
         try {
@@ -173,5 +187,19 @@ public class OmegaORM implements ORM{
     public int nextVal(String seq) {
         String req = String.format("select nextval('%s')", seq);
         return jdbcTemplate.queryForObject(req, Integer.class);
+    }
+
+    @Override
+    public <T extends Content> Object getContentExtraField(T content) {
+        List<Field> clFields = Arrays.asList(content.getClass().getDeclaredFields());
+        try {
+            Field field = clFields.get(0);
+            field.setAccessible(true);
+            Object o = field.get(content);
+            field.setAccessible(false);
+            return o;
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
