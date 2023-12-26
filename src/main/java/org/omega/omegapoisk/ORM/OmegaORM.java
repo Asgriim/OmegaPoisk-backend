@@ -143,7 +143,9 @@ public class OmegaORM implements ORM{
 
             while (sqlRowSet.next()) {
                 currId =  sqlRowSet.getInt("id");
-
+                if (currId == 80) {
+                    System.out.println("bug");
+                }
                 if (currId != lastId) {
 
                     if (currCard != null) {
@@ -197,7 +199,7 @@ public class OmegaORM implements ORM{
     public <T extends Content> List<CardDTO<T>> getAllCards(Class<? extends OmegaEntity> cl) {
         String tableName = getTableName(cl);
         String objId = tableName + ".id";
-        String req = String.format("select * from %s left join content_tags ON content_tags.contentid = %s left join tags ON tags.id = content_tags.tagid left join avg_rating ON avg_rating.contentid = content_tags.contentid order by %s", tableName, objId,objId);
+        String req = String.format("select * from %s left join content_tags ON content_tags.contentid = %s left join tags ON tags.id = content_tags.tagid left join avg_rating ON avg_rating.contentid = %s order by %s", tableName, objId,objId,objId);
         System.out.println(req);
         SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(req);
 

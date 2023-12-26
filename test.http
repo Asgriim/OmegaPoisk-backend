@@ -10,7 +10,7 @@ Content-Type: application/json
 {"id":0,"login":"oasdasdasd","email":"","pass":"asddsad","role":"USER","token":""}
 
 ###
-GET localhost:27401/api/read/tv_show
+GET localhost:27401/api/read/anime
 
 
 ####
