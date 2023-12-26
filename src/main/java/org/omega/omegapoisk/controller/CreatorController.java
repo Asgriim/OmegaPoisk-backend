@@ -19,18 +19,13 @@ public class CreatorController {
     private final UserService userService;
     private final ContentService contentService;
 
-    private void checkUser(User user) {
-        if (user.getRoles().get(0).equals(Role.USER))  {
-            throw new AccessDeniedException();
-        }
-    }
 
     @PostMapping("/add/anime")
     public ResponseEntity<?> addAnime(@RequestPart("json") AddContentDTO<Anime> contentDTO, @RequestPart("image") MultipartFile file) {
         System.out.println("add anime");
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.loadUserByUsername(userDetails.getUsername());
-        checkUser(user);
+        userService.checkUser(user);
         System.out.println(user.getUsername());
         contentService.addAnime(contentDTO, file, user);
         return ResponseEntity.ok("ok");
@@ -42,7 +37,7 @@ public class CreatorController {
         System.out.println(contentDTO.getContent());
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.loadUserByUsername(userDetails.getUsername());
-        checkUser(user);
+        userService.checkUser(user);
         System.out.println(user.getUsername());
         contentService.addComic(contentDTO, file, user);
         return ResponseEntity.ok("ok");
@@ -53,7 +48,7 @@ public class CreatorController {
         System.out.println("add game");
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.loadUserByUsername(userDetails.getUsername());
-        checkUser(user);
+        userService.checkUser(user);
         System.out.println(user.getUsername());
         contentService.addGame(contentDTO, file, user);
         return ResponseEntity.ok("ok");
@@ -63,7 +58,7 @@ public class CreatorController {
     public ResponseEntity<?> addTVShow(@RequestPart("json") AddContentDTO<TvShow> contentDTO, @RequestPart("image") MultipartFile file) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.loadUserByUsername(userDetails.getUsername());
-        checkUser(user);
+        userService.checkUser(user);
         System.out.println(user.getUsername());
         contentService.addTvShow(contentDTO, file, user);
         return ResponseEntity.ok("ok");
@@ -74,7 +69,7 @@ public class CreatorController {
     public ResponseEntity<?> addMovie(@RequestPart("json") AddContentDTO<Movie> contentDTO, @RequestPart("image") MultipartFile file) {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.loadUserByUsername(userDetails.getUsername());
-        checkUser(user);
+        userService.checkUser(user);
         System.out.println(user.getUsername());
         contentService.addMovie(contentDTO, file, user);
         return ResponseEntity.ok("ok");
@@ -85,7 +80,7 @@ public class CreatorController {
         System.out.println("read anime");
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.loadUserByUsername(userDetails.getUsername());
-        checkUser(user);
+        userService.checkUser(user);
         Class<Anime> cl = Anime.class;
         if (user.getRoles().get(0).equals(Role.ADMIN)) {
 //            return ResponseEntity.ok("admin");
@@ -98,7 +93,7 @@ public class CreatorController {
     public ResponseEntity<?> readOwnerComic() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.loadUserByUsername(userDetails.getUsername());
-        checkUser(user);
+        userService.checkUser(user);
         Class<Comic> cl = Comic.class;
         if (user.getRoles().get(0).equals(Role.ADMIN)) {
 //            return ResponseEntity.ok("admin");
@@ -112,7 +107,7 @@ public class CreatorController {
     public ResponseEntity<?> readOwnerGame() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.loadUserByUsername(userDetails.getUsername());
-        checkUser(user);
+        userService.checkUser(user);
         Class<Game> cl = Game.class;
         if (user.getRoles().get(0).equals(Role.ADMIN)) {
 //            return ResponseEntity.ok("admin");
@@ -126,7 +121,7 @@ public class CreatorController {
     public ResponseEntity<?> readOwnerMovie() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.loadUserByUsername(userDetails.getUsername());
-        checkUser(user);
+        userService.checkUser(user);
         Class cl = Movie.class;
         if (user.getRoles().get(0).equals(Role.ADMIN)) {
 //            return ResponseEntity.ok("admin");
@@ -139,7 +134,7 @@ public class CreatorController {
     public ResponseEntity<?> readOwnerTvShow() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.loadUserByUsername(userDetails.getUsername());
-        checkUser(user);
+        userService.checkUser(user);
         Class<TvShow> cl = TvShow.class;
         if (user.getRoles().get(0).equals(Role.ADMIN)) {
 //            return ResponseEntity.ok("admin");
@@ -150,7 +145,7 @@ public class CreatorController {
 
 
     private <T extends OmegaEntity> void delCont(Class<T> cl, User user, int id) {
-        checkUser(user);
+        userService.checkUser(user);
         System.out.println(user.getRoles().get(0));
         if (user.getRoles().get(0).equals(Role.ADMIN)) {
             contentService.deleteContentById(cl,id);
@@ -211,7 +206,7 @@ public class CreatorController {
         System.out.println("update");
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userService.loadUserByUsername(userDetails.getUsername());
-        checkUser(user);
+        userService.checkUser(user);
         if (user.getRoles().get(0).equals(Role.CREATOR)) {
             if (!contentService.checkOwner(user,contentDTO.getContent().getId())) {
                 throw new AccessDeniedException();

@@ -181,12 +181,7 @@ public class ContentRepository {
     }
 
     public <T extends OmegaEntity> void deleteContentById(Class<T> cl, int id) {
-        String tableName = omegaORM.getTableName(cl);
-        String tbId = tableName + ".id";
-        String query = String.format("delete from %s where %s = %s", tableName, tbId,id);
-        System.out.println(query);
-        jdbcTemplate.update(query);
-
+        omegaORM.deleteById(cl,id);
     }
 
     public void deleteContentTags(List<Tag> tags, int contentId) {

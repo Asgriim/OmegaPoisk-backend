@@ -1,8 +1,10 @@
 package org.omega.omegapoisk.ORM;
 
 import org.omega.omegapoisk.data.CardDTO;
+import org.omega.omegapoisk.data.ReviewDTO;
 import org.omega.omegapoisk.entity.Content;
 import org.omega.omegapoisk.entity.OmegaEntity;
+import org.omega.omegapoisk.entity.Review;
 import org.omega.omegapoisk.entity.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -57,6 +59,35 @@ public class OmegaORM implements ORM{
     }
 
     @Override
+    public List<ReviewDTO> getAllReview() {
+        List<ReviewDTO> reviewDTOS = new ArrayList<>();
+        String req = "select * from review join user_ on user_.id = review.userid";
+        SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(req);
+        List<Field> fieldsOfClass = getFieldsOfClass(Review.class);
+
+        try {
+            while (sqlRowSet.next()) {
+                ReviewDTO reviewDTO = new ReviewDTO();
+                Review entity = Review.class.getConstructor().newInstance();
+
+                for (var field : fieldsOfClass) {
+                    String fieldName = field.getName();
+                    field.setAccessible(true);
+                    field.set(entity, sqlRowSet.getObject(fieldName));
+                    field.setAccessible(false);
+                }
+                reviewDTO.setLogin(sqlRowSet.getString("login"));
+                reviewDTO.setReview(entity);
+                reviewDTOS.add(reviewDTO);
+            }
+            return reviewDTOS;
+        } catch (InvocationTargetException | NoSuchMethodException | IllegalAccessException | InstantiationException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    @Override
     public List<?> getListFromRowSet(Class<? extends OmegaEntity> cl, SqlRowSet sqlRowSet) {
         List<Object> omegaEntities = new ArrayList<>();
         List<Field> allFields = getFieldsOfClass(cl);
@@ -75,6 +106,15 @@ public class OmegaORM implements ORM{
             throw new RuntimeException(e);
         }
         return omegaEntities;
+    }
+
+    @Override
+    public <T extends OmegaEntity> void deleteById(Class<T> cl, int id) {
+        String tableName = getTableName(cl);
+        String tbId = tableName + ".id";
+        String query = String.format("delete from %s where %s = %s", tableName, tbId,id);
+        System.out.println(query);
+        jdbcTemplate.update(query);
     }
 
     @Override

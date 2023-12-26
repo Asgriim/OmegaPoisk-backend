@@ -132,6 +132,18 @@ CREATE TABLE IF NOT EXISTS history (
 
 
 
+-- Таблица review
+CREATE TABLE IF NOT EXISTS review (
+                                      id SERIAL PRIMARY KEY,
+                                      txt TEXT,
+                                      userId INT NOT NULL,
+                                      contentId INT NOT NULL,
+                                      FOREIGN KEY (userId) REFERENCES user_ (id) ON DELETE CASCADE ,
+                                      FOREIGN KEY (contentId) REFERENCES content (id) ON DELETE CASCADE
+);
+
+
+
 
 CREATE OR REPLACE FUNCTION add_to_content()
     RETURNS TRIGGER AS $$

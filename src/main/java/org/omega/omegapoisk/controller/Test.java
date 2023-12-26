@@ -3,6 +3,7 @@ package org.omega.omegapoisk.controller;
 import org.omega.omegapoisk.data.AddContentDTO;
 import org.omega.omegapoisk.data.CardDTO;
 import org.omega.omegapoisk.data.ContentPageDTO;
+import org.omega.omegapoisk.data.ReviewDTO;
 import org.omega.omegapoisk.entity.*;
 import org.omega.omegapoisk.repository.ContentRepository;
 import org.omega.omegapoisk.service.ContentService;
@@ -87,14 +88,9 @@ public class Test {
 
     @PostMapping("/upd")
     public ResponseEntity<?> upd() {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        User user = userService.loadUserByUsername(userDetails.getUsername());
-        AddContentDTO<Movie> movieAddContentDTO = new AddContentDTO<>();
-        movieAddContentDTO.setContent(new Movie(123));
-        movieAddContentDTO.setStudio("asr");
-        contentRepository.updateContent(movieAddContentDTO, null,user);
-//        contentRepository.deleteContentTags(contentRepository.getAllTags()
-//        ,72);
-        return ResponseEntity.ok("");
+        ReviewDTO reviewDTO = new ReviewDTO();
+        reviewDTO.setReview(new Review(1,"123",123,23));
+        reviewDTO.setLogin("login");
+        return ResponseEntity.ok(reviewDTO);
     }
 }

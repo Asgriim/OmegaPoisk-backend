@@ -4,6 +4,7 @@ import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.omega.omegapoisk.entity.Role;
 import org.omega.omegapoisk.entity.User;
+import org.omega.omegapoisk.exception.AccessDeniedException;
 import org.omega.omegapoisk.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -36,6 +37,12 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException("no such user");
         }
         return usersByLogin.get(0);
+    }
+
+    public void checkUser(User user) {
+        if (user.getRoles().get(0).equals(Role.USER))  {
+            throw new AccessDeniedException();
+        }
     }
 
     public void addUser(User user) {
