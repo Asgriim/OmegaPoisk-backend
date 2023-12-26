@@ -43,7 +43,8 @@ public class ReviewRepository {
 
 
     public void addRating(Rating rating) {
-        omegaORM.deleteById(rating.getClass(), rating.getId());
+        String del = "delete from rating where contentid = ? and userid = ?";
+        jdbcTemplate.update(del, rating.getContentId(), rating.getUserId());
         String req = "insert into rating(value, userid, contentid) values (?,?,?)";
         jdbcTemplate.update(req, rating.getValue(), rating.getUserId(), rating.getContentId());
     }
