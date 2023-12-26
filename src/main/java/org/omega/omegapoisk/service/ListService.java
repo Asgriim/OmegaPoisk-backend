@@ -26,4 +26,9 @@ public class ListService {
     public UserList getListByOwner(int userId, int contentId) {
         return listRepository.getListByOwner(userId, contentId);
     }
+
+
+    public void delListById(UserList userList) {
+        listRepository.delListById(userList);
+    }
 }

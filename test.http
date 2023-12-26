@@ -114,7 +114,7 @@ Content-Type: application/json
 
 
 ###
-POST localhost:27401/api/list/add
+POST localhost:27401/api/list/del
 Authorization:Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDM2MTcwNDcsImV4cCI6MTcwMzcwMzQ0Nywic3ViIjoib21lZ2EifQ.sDH_RQ-TR_32y9UooWEtfdmlYJAsqK0yuxLQd2lCazLXKnwYoni79KYaCdkb4gWM0F24u_90d91UrKhwpKokqQ
 Content-Type: application/json
 
@@ -128,3 +128,4 @@ Content-Type: application/json
 ###
 GET localhost:27401/api/list/all
 Authorization:Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDM2MTcwNDcsImV4cCI6MTcwMzcwMzQ0Nywic3ViIjoib21lZ2EifQ.sDH_RQ-TR_32y9UooWEtfdmlYJAsqK0yuxLQd2lCazLXKnwYoni79KYaCdkb4gWM0F24u_90d91UrKhwpKokqQ
+

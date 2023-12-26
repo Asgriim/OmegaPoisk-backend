@@ -79,4 +79,15 @@ public class UserListController {
     }
 
 
+    @PostMapping("/del")
+    public ResponseEntity<?> del(@RequestBody UserList userList) {
+        User user = userService.getUserFromContext();
+        if (user.getId() != userList.getUserId()) {
+            throw new AccessDeniedException();
+        }
+        listService.delListById(userList);
+        return ResponseEntity.ok("");
+    }
+
+
 }

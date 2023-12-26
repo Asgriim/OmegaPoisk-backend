@@ -57,4 +57,10 @@ public class ListRepository {
         return list.get(0);
     }
 
+    public void delListById(UserList userList) {
+        jdbcTemplate.update("delete from user_list where userid = ? and contentid = ?",
+                userList.getUserId(),
+                userList.getContentId());
+    }
+
 }
