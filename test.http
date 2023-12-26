@@ -29,7 +29,7 @@ GET localhost:27401/api/read/all_tags
 GET localhost:27401/test/add
 
 ###
-GET localhost:27401/api/read/anime/2
+GET localhost:27401/api/read/anime/80
 
 
 ###

@@ -211,7 +211,7 @@ public class OmegaORM implements ORM{
     public <T extends Content> CardDTO<T> getCardById(Class<? extends OmegaEntity> cl, int contentId) {
         String tableName = getTableName(cl);
         String objId = tableName + ".id";
-        String req = String.format("select * from %s left join content_tags ON content_tags.contentid = %s left join tags ON tags.id = content_tags.tagid left join avg_rating ON avg_rating.contentid = content_tags.contentid where %s =", tableName, objId,objId)
+        String req = String.format("select * from %s left join content_tags ON content_tags.contentid = %s left join tags ON tags.id = content_tags.tagid left join avg_rating ON avg_rating.contentid = %s where %s =", tableName, objId,objId,objId)
                 + contentId;
         System.out.println(req);
         SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(req);
