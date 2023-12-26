@@ -92,3 +92,21 @@ Authorization:Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDM2MTcwNDcsImV4cCI6MTcwMz
   },
   "login": "login"
 }
+
+###
+GET  localhost:27401/api/rating/73
+Authorization:Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDM2MTcwNDcsImV4cCI6MTcwMzcwMzQ0Nywic3ViIjoib21lZ2EifQ.sDH_RQ-TR_32y9UooWEtfdmlYJAsqK0yuxLQd2lCazLXKnwYoni79KYaCdkb4gWM0F24u_90d91UrKhwpKokqQ
+
+
+###
+
+POST localhost:27401/api/rating/add
+Authorization:Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDM2MTcwNDcsImV4cCI6MTcwMzcwMzQ0Nywic3ViIjoib21lZ2EifQ.sDH_RQ-TR_32y9UooWEtfdmlYJAsqK0yuxLQd2lCazLXKnwYoni79KYaCdkb4gWM0F24u_90d91UrKhwpKokqQ
+Content-Type: application/json
+
+{
+  "id": 3,
+  "value": 3,
+  "userId": 9,
+  "contentId": 73
+}

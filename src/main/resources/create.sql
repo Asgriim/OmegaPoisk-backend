@@ -59,7 +59,7 @@ CREATE TABLE IF NOT EXISTS content (
 
 CREATE TABLE IF NOT EXISTS rating (
                                       id SERIAL PRIMARY KEY,
-                                      value INT CHECK ( value > 0 ),
+                                      value INT CHECK ( value > 0 and value < 11),
                                       userId INT,
                                       contentId INT,
                                       FOREIGN KEY (userId) REFERENCES user_ (id) ON DELETE CASCADE ,

@@ -92,7 +92,6 @@ public class Test {
 
     @PostMapping("/upd")
     public ResponseEntity<?> upd() {
-        reviewRepository.deleteReviewById(1);
-        return ResponseEntity.ok("");
+        return ResponseEntity.ok(new Rating(123,123,123,123));
     }
 }

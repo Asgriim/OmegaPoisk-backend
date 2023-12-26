@@ -1,6 +1,7 @@
 package org.omega.omegapoisk.service;
 
 import org.omega.omegapoisk.data.ReviewDTO;
+import org.omega.omegapoisk.entity.Rating;
 import org.omega.omegapoisk.entity.Review;
 import org.omega.omegapoisk.entity.User;
 import org.omega.omegapoisk.repository.ReviewRepository;
@@ -24,6 +25,9 @@ public class ReviewService {
     }
 
     public void addReview(Review review) {
+        if (review.getTxt().isEmpty()) {
+            return;
+        }
         reviewRepository.addReview(review);
     }
 
@@ -31,5 +35,12 @@ public class ReviewService {
         reviewRepository.deleteReviewById(id);
     }
 
+    public void addRating(Rating rating) {
+        reviewRepository.addRating(rating);
+    }
+
+    public Rating getRatingById(int id, User user) {
+        return reviewRepository.getRatingById(id, user);
+    }
 
 }

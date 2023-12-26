@@ -2,10 +2,12 @@ package org.omega.omegapoisk.repository;
 
 import org.omega.omegapoisk.ORM.OmegaORM;
 import org.omega.omegapoisk.data.ReviewDTO;
+import org.omega.omegapoisk.entity.Rating;
 import org.omega.omegapoisk.entity.Review;
 import org.omega.omegapoisk.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -38,5 +40,26 @@ public class ReviewRepository {
         Integer i = jdbcTemplate.queryForObject(req, Integer.class);
         return i > 0;
     }
+
+
+    public void addRating(Rating rating) {
+        omegaORM.deleteById(rating.getClass(), rating.getId());
+        String req = "insert into rating(value, userid, contentid) values (?,?,?)";
+        jdbcTemplate.update(req, rating.getValue(), rating.getUserId(), rating.getContentId());
+    }
+
+    public Rating getRatingById(int id, User user) {
+        String req = String.format("select * from rating where userid =%s and contentid =%s",user.getId(),id);
+        SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(req);
+
+        List<Rating> list = (List<Rating>) omegaORM.getListFromRowSet(Rating.class, sqlRowSet);
+        if (list.isEmpty()) {
+            return null;
+        }
+
+        return list.get(0);
+    }
+
+
 
 }
