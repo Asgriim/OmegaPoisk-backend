@@ -1,11 +1,9 @@
 package org.omega.omegapoisk.controller;
 
-import org.omega.omegapoisk.data.AddContentDTO;
-import org.omega.omegapoisk.data.CardDTO;
-import org.omega.omegapoisk.data.ContentPageDTO;
-import org.omega.omegapoisk.data.ReviewDTO;
+import org.omega.omegapoisk.data.*;
 import org.omega.omegapoisk.entity.*;
 import org.omega.omegapoisk.repository.ContentRepository;
+import org.omega.omegapoisk.repository.ListRepository;
 import org.omega.omegapoisk.repository.ReviewRepository;
 import org.omega.omegapoisk.service.ContentService;
 import org.omega.omegapoisk.service.UserService;
@@ -19,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -38,6 +37,9 @@ public class Test {
 
     @Autowired
     ReviewRepository reviewRepository;
+
+    @Autowired
+    ListRepository listRepository;
 
     @GetMapping("/all")
     public ResponseEntity<?> all() {
@@ -92,6 +94,9 @@ public class Test {
 
     @PostMapping("/upd")
     public ResponseEntity<?> upd() {
-        return ResponseEntity.ok(new Rating(123,123,123,123));
+        UserListsDTO userListsDTO = new UserListsDTO();
+        List<UserList> allListByType = listRepository.getAllListByType(ListType.WATCHED);
+
+        return ResponseEntity.ok(allListByType);
     }
 }

@@ -142,6 +142,23 @@ CREATE TABLE IF NOT EXISTS review (
                                       FOREIGN KEY (contentId) REFERENCES content (id) ON DELETE CASCADE
 );
 
+-- Таблица list
+CREATE TABLE IF NOT EXISTS list (
+                                    id SERIAL PRIMARY KEY,
+                                    name TEXT NOT NULL
+);
+
+-- Таблица user_list
+CREATE TABLE IF NOT EXISTS user_list (
+                                         userId INT NOT NULL,
+                                         listId INT NOT NULL,
+                                         contentId INT NOT NULL,
+                                         contentTitle TEXT NOT NULL,
+                                         FOREIGN KEY (contentId) REFERENCES content (id) ON DELETE CASCADE ,
+                                         FOREIGN KEY (userId) REFERENCES user_ (id) ON DELETE CASCADE ,
+                                         FOREIGN KEY (listId) REFERENCES list (id) ON DELETE CASCADE
+);
+
 
 
 
