@@ -23,15 +23,16 @@ public class ListRepository {
         jdbcTemplate.update("delete from user_list where userid = ? and contentid = ?",
                 userList.getUserId(),
                 userList.getContentId());
-        jdbcTemplate.update("insert into user_list(userid, contentid, contenttitle, listid) VALUES (?, ?, ?, ?)",
+        jdbcTemplate.update("insert into user_list(userid, contentid, contenttitle, listid, contenttype) VALUES (?,?,?,?,?)",
                 userList.getUserId(),
                 userList.getContentId(),
                 userList.getContentTitle(),
-                userList.getListId());
+                userList.getListId(),
+                userList.getContentType());
     }
 
     public List<UserList> getAllListByType(ListType listType, int userId) {
-        String req = "select * from user_list where userid = ? and listid = ?";
+        String req = "select * from user_list where userid = ? and listid = ? order by contenttype";
 
         SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(req,
                 userId,

@@ -15,6 +15,7 @@ public class UserList implements OmegaEntity{
     private int listId;
     private int contentId;
     private String contentTitle;
+    private String contentType;
 
     @Override
     public String TableName() {

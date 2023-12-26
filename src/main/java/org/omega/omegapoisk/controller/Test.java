@@ -95,7 +95,7 @@ public class Test {
     @PostMapping("/upd")
     public ResponseEntity<?> upd() {
         UserListsDTO userListsDTO = new UserListsDTO();
-        userListsDTO.setWatched(Collections.singletonList(new UserList(123,12312,13,"123")));
+        userListsDTO.setWatched(Collections.singletonList(new UserList(123,12312,13,"123","anime")));
 //        List<UserList> allListByType = listRepository.getAllListByType(ListType.WATCHED);
 
         return ResponseEntity.ok(userListsDTO);

@@ -154,6 +154,7 @@ CREATE TABLE IF NOT EXISTS user_list (
                                          listId INT NOT NULL,
                                          contentId INT NOT NULL,
                                          contentTitle TEXT NOT NULL,
+                                         contentType TEXT,
                                          FOREIGN KEY (contentId) REFERENCES content (id) ON DELETE CASCADE ,
                                          FOREIGN KEY (userId) REFERENCES user_ (id) ON DELETE CASCADE ,
                                          FOREIGN KEY (listId) REFERENCES list (id) ON DELETE CASCADE
