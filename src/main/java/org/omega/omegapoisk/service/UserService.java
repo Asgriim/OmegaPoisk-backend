@@ -9,6 +9,7 @@ import org.omega.omegapoisk.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -43,6 +44,12 @@ public class UserService implements UserDetailsService {
         if (user.getRoles().get(0).equals(Role.USER))  {
             throw new AccessDeniedException();
         }
+    }
+
+    public User getUserFromContext() {
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = loadUserByUsername(userDetails.getUsername());
+        return user;
     }
 
     public void addUser(User user) {

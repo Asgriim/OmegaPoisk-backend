@@ -6,6 +6,7 @@ import org.omega.omegapoisk.data.ContentPageDTO;
 import org.omega.omegapoisk.data.ReviewDTO;
 import org.omega.omegapoisk.entity.*;
 import org.omega.omegapoisk.repository.ContentRepository;
+import org.omega.omegapoisk.repository.ReviewRepository;
 import org.omega.omegapoisk.service.ContentService;
 import org.omega.omegapoisk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,9 @@ public class Test {
 
     @Autowired
     ContentRepository contentRepository;
+
+    @Autowired
+    ReviewRepository reviewRepository;
 
     @GetMapping("/all")
     public ResponseEntity<?> all() {
@@ -88,9 +92,7 @@ public class Test {
 
     @PostMapping("/upd")
     public ResponseEntity<?> upd() {
-        ReviewDTO reviewDTO = new ReviewDTO();
-        reviewDTO.setReview(new Review(1,"123",123,23));
-        reviewDTO.setLogin("login");
-        return ResponseEntity.ok(reviewDTO);
+        reviewRepository.deleteReviewById(1);
+        return ResponseEntity.ok("");
     }
 }

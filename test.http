@@ -75,4 +75,20 @@ Authorization:Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDM2MDE1MjEsImV4cCI6MTcwMz
 
 
 ###
-GET localhost:27401/api/review/all
+POST localhost:27401/api/review/del/2
+Authorization:Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDM2MDE1MjEsImV4cCI6MTcwMzY4NzkyMSwic3ViIjoib21lZ2EifQ.0dfF8shd5SA7_o7xEhmQ8RPujtBQY0p3FvUdnzIFDEegIhFymaXdsokEM1Md-RbMnHH3WaqnlIbR-xNdU3LNfw
+
+###
+POST  localhost:27401/api/review/add
+Content-Type: application/json
+Authorization:Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDM2MTcwNDcsImV4cCI6MTcwMzcwMzQ0Nywic3ViIjoib21lZ2EifQ.sDH_RQ-TR_32y9UooWEtfdmlYJAsqK0yuxLQd2lCazLXKnwYoni79KYaCdkb4gWM0F24u_90d91UrKhwpKokqQ
+
+{
+  "review": {
+    "id": 9,
+    "txt": "123",
+    "userId": 9,
+    "contentId": 73
+  },
+  "login": "login"
+}
