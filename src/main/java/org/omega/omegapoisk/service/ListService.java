@@ -19,8 +19,8 @@ public class ListService {
         listRepository.addList(userList);
     }
 
-    public List<UserList> getAllListByType(ListType listType) {
-        return listRepository.getAllListByType(listType);
+    public List<UserList> getAllListByType(ListType listType, int userId) {
+        return listRepository.getAllListByType(listType, userId);
     }
 
     public UserList getListByOwner(int userId, int contentId) {

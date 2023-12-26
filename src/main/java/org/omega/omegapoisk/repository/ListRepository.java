@@ -30,10 +30,12 @@ public class ListRepository {
                 userList.getListId());
     }
 
-    public List<UserList> getAllListByType(ListType listType) {
-        String req = "select * from user_list where listid = " + listType.getVal();
+    public List<UserList> getAllListByType(ListType listType, int userId) {
+        String req = "select * from user_list where userid = ? and listid = ?";
 
-        SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(req);
+        SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(req,
+                userId,
+                listType.getVal());
         List<UserList> list = (List<UserList>) omegaORM.getListFromRowSet(UserList.class, sqlRowSet);
 
         return list;

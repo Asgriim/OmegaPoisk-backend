@@ -13,4 +13,5 @@ import java.util.List;
 public class UserListsDTO {
     List<UserList> watched;
     List<UserList> watching;
+    List<UserList> willWatch;
 }

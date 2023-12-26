@@ -1,5 +1,7 @@
 package org.omega.omegapoisk.controller;
 
+import org.omega.omegapoisk.data.UserListsDTO;
+import org.omega.omegapoisk.entity.ListType;
 import org.omega.omegapoisk.entity.Rating;
 import org.omega.omegapoisk.entity.User;
 import org.omega.omegapoisk.entity.UserList;
@@ -9,6 +11,11 @@ import org.omega.omegapoisk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @RestController
 @RequestMapping("api/list")
@@ -42,8 +49,34 @@ public class UserListController {
     }
 
 
+    @GetMapping("/all")
+    public ResponseEntity<?> getAll() throws InterruptedException {
+        User user = userService.getUserFromContext();
+        ExecutorService watched = Executors.newFixedThreadPool(1);
+        ExecutorService watching = Executors.newFixedThreadPool(1);
+        ExecutorService will = Executors.newFixedThreadPool(1);
+        CountDownLatch latch = new CountDownLatch(3);
+        UserListsDTO userListsDTO = new UserListsDTO(new ArrayList<>(),new ArrayList<>(),new ArrayList<>());
 
+        watched.execute(() -> {
+            userListsDTO.setWatched(listService.getAllListByType(ListType.WATCHED, user.getId()));
+            latch.countDown();
+        });
 
+        watching.execute(() -> {
+            userListsDTO.setWatching(listService.getAllListByType(ListType.WATCHING, user.getId()));
+            latch.countDown();
+        });
+
+        will.execute(() -> {
+            userListsDTO.setWillWatch(listService.getAllListByType(ListType.WILL_WATCH, user.getId()));
+            latch.countDown();
+        });
+
+        latch.await();
+
+        return ResponseEntity.ok(userListsDTO);
+    }
 
 
 }
