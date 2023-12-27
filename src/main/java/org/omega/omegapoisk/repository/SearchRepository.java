@@ -26,14 +26,16 @@ public class SearchRepository {
     public <T extends Content> List<CardDTO<T>> searchByTitle(Class<T> cl, String title, String qTemplate){
         String tableName = omegaORM.getTableName((Class<? extends OmegaEntity>) cl);
         String tbId = tableName + ".id";
-        String contTitle = tableName + ".title";
-        String quer = String.format(qTemplate,
-                tableName,
-                tbId,
-                tbId,
-                contTitle,
-                tbId
-                );
+//        String contTitle = tableName + ".title";
+        String quer;
+//        String quer = String.format(qTemplate,
+//                tableName,
+//                tbId,
+//                tbId,
+//                contTitle,
+//                tbId
+//                );
+        quer = qTemplate;
         quer += "like concat('%',?,'%') order by " + tbId;
 
         SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(quer, title);
@@ -41,5 +43,10 @@ public class SearchRepository {
         List<CardDTO<T>> cards = omegaORM.getCards((Class<? extends OmegaEntity>) cl, sqlRowSet);
         return cards;
     }
+
+    public <T extends Content> List<CardDTO<T>> searchByTitleCreator(Class<T> cl, String title, String qTemplate) {
+        return null;
+    }
+
 
 }
