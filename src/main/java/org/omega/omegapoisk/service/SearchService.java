@@ -50,16 +50,18 @@ public class SearchService {
         String templ = "select * from %s join owner_of_content on owner_of_content.contentid = %s\n" +
                 "                    left join content_tags on content_tags.contentid = %s\n" +
                 "                    left join tags ON tags.id = content_tags.tagid\n" +
-                "                    left join avg_rating ON avg_rating.contentid = %s where owner_of_content.userid = %s ";
+                "                    left join avg_rating ON avg_rating.contentid = %s where owner_of_content.userid = %s and lower(%s)";
 
         String tableName = omegaORM.getTableName((Class<? extends OmegaEntity>) cl);
         String tbId = tableName + ".id";
+        String contTitle = tableName + ".title";
         String quer = String.format(templ,
                 tableName,
                 tbId,
                 tbId,
                 tbId,
-                user.getId()
+                user.getId(),
+                contTitle
         );
         System.out.println(quer);
         List<CardDTO<T>> cardDTOS = searchRepository.searchByTitle(cl, title, quer);
