@@ -131,3 +131,7 @@ Authorization:Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDM2MTcwNDcsImV4cCI6MTcwMz
 
 ###
 GET localhost:27401/api/review/all/75
+
+
+###
+GET  localhost:27401/api/search/anime/f
