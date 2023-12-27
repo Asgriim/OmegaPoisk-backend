@@ -54,11 +54,13 @@ public class ContentRepository {
     }
 
     private String saveFile(MultipartFile file, String dir) throws IOException {
-        String path = System.getProperty("user.home") + imageDirPath + dir + "/" + createFileName(file);
+        String fileName = createFileName(file);
+        String path = System.getProperty("user.home") + imageDirPath + dir + "/" + fileName;
         FileOutputStream fileOutputStream = new FileOutputStream(path);
         fileOutputStream.write(file.getInputStream().readAllBytes());
         fileOutputStream.close();
-        return path;
+        String outPath = "../img/" + dir + "/" + fileName;
+        return outPath;
     }
 
     public void addAnime(AddContentDTO<Anime> contentDTO, MultipartFile file, User user) {
