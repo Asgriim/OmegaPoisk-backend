@@ -16,8 +16,8 @@ public class ReviewService {
     @Autowired
     ReviewRepository reviewRepository;
 
-    public List<ReviewDTO> getAllReview() {
-        return reviewRepository.getAllReviews();
+    public List<ReviewDTO> getAllReview(int id) {
+        return reviewRepository.getAllReviews(id);
     }
 
     public boolean isOwner(User user, int reviewId) {

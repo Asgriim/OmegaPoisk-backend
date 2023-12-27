@@ -59,9 +59,9 @@ public class OmegaORM implements ORM{
     }
 
     @Override
-    public List<ReviewDTO> getAllReview() {
+    public List<ReviewDTO> getAllReview(int contentId) {
         List<ReviewDTO> reviewDTOS = new ArrayList<>();
-        String req = "select * from review join user_ on user_.id = review.userid";
+        String req = "select * from review join user_ on user_.id = review.userid where contentid =" + contentId;
         SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(req);
         List<Field> fieldsOfClass = getFieldsOfClass(Review.class);
 
@@ -143,7 +143,7 @@ public class OmegaORM implements ORM{
 
             while (sqlRowSet.next()) {
                 currId =  sqlRowSet.getInt("id");
-                if (currId == 80) {
+                if (currId == 85) {
                     System.out.println("bug");
                 }
                 if (currId != lastId) {
@@ -241,6 +241,15 @@ public class OmegaORM implements ORM{
             field.setAccessible(false);
             return o;
         } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public <T extends OmegaEntity> T createObj(Class<T> cl) {
+        try {
+            return cl.getConstructor().newInstance();
+        } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
             throw new RuntimeException(e);
         }
     }

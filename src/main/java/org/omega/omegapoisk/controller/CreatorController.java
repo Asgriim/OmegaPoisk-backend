@@ -217,6 +217,8 @@ public class CreatorController {
 
     @PostMapping("/update/anime")
     public ResponseEntity<?> updateAnime(@RequestPart("json") AddContentDTO<Anime> contentDTO, @RequestPart("image") MultipartFile file) {
+        System.out.println("update anime");
+        System.out.println(contentDTO);
         updateContent(contentDTO, file);
         return ResponseEntity.ok("");
     }

@@ -5,6 +5,7 @@ import org.omega.omegapoisk.entity.*;
 import org.omega.omegapoisk.repository.ContentRepository;
 import org.omega.omegapoisk.repository.ListRepository;
 import org.omega.omegapoisk.repository.ReviewRepository;
+import org.omega.omegapoisk.repository.SearchRepository;
 import org.omega.omegapoisk.service.ContentService;
 import org.omega.omegapoisk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,9 @@ public class Test {
 
     @Autowired
     ListRepository listRepository;
+
+    @Autowired
+    SearchRepository searchRepository;
 
     @GetMapping("/all")
     public ResponseEntity<?> all() {
@@ -94,10 +98,14 @@ public class Test {
 
     @PostMapping("/upd")
     public ResponseEntity<?> upd() {
-        UserListsDTO userListsDTO = new UserListsDTO();
-        userListsDTO.setWatched(Collections.singletonList(new UserList(123,12312,13,"123","anime")));
+//        UserListsDTO userListsDTO = new UserListsDTO();
+//        userListsDTO.setWatched(Collections.singletonList(new UserList(123,12312,13,"123","anime")));
 //        List<UserList> allListByType = listRepository.getAllListByType(ListType.WATCHED);
+        String templ = "select * from %s left join content_tags on content_tags.contentid = %s\n" +
+                "                    left join tags ON tags.id = content_tags.tagid\n" +
+                "                    left join avg_rating ON avg_rating.contentid = %s where  lower(%s) ";
 
-        return ResponseEntity.ok(userListsDTO);
+        List<CardDTO<Anime>> f = searchRepository.searchByTitle(Anime.class, "f", templ);
+        return ResponseEntity.ok(f);
     }
 }

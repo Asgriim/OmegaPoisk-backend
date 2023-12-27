@@ -11,7 +11,7 @@ import java.util.List;
 public interface ORM {
     int nextVal(String seq);
     String getTableName(Class<? extends OmegaEntity> cl);
-    List<ReviewDTO> getAllReview();
+    List<ReviewDTO> getAllReview(int contentId);
     List<?> getListOf(Class<? extends OmegaEntity> cl);
     List<?> getListFromRowSet(Class<? extends OmegaEntity> cl, SqlRowSet sqlRowSet);
     <T extends OmegaEntity> void deleteById(Class<T> cl, int id);
@@ -20,6 +20,7 @@ public interface ORM {
     <T extends Content> CardDTO<T> getCardById(Class<? extends OmegaEntity> cl, int contentId);
     <T extends Content> List<CardDTO<T>> getCards(Class<? extends OmegaEntity> cl, SqlRowSet sqlRowSet);
     <T extends Content> Object getContentExtraField(T content);
+    <T extends  OmegaEntity> T createObj(Class<T> cl);
 
 
     //todo get cards of owner

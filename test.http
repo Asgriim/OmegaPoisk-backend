@@ -10,7 +10,7 @@ Content-Type: application/json
 {"id":0,"login":"oasdasdasd","email":"","pass":"asddsad","role":"USER","token":""}
 
 ###
-GET localhost:27401/api/read/anime
+GET localhost:27401/api/read/anime/85
 
 
 ####
@@ -129,3 +129,5 @@ Content-Type: application/json
 GET localhost:27401/api/list/all
 Authorization:Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDM2MTcwNDcsImV4cCI6MTcwMzcwMzQ0Nywic3ViIjoib21lZ2EifQ.sDH_RQ-TR_32y9UooWEtfdmlYJAsqK0yuxLQd2lCazLXKnwYoni79KYaCdkb4gWM0F24u_90d91UrKhwpKokqQ
 
+###
+GET localhost:27401/api/review/all/75

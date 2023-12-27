@@ -20,8 +20,8 @@ public class ReviewRepository {
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    public List<ReviewDTO> getAllReviews() {
-        return omegaORM.getAllReview();
+    public List<ReviewDTO> getAllReviews(int contentId) {
+        return omegaORM.getAllReview(contentId);
     }
 
     public void deleteReviewById(int id) {
