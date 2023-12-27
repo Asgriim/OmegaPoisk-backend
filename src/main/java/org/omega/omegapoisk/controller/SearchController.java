@@ -17,61 +17,61 @@ public class SearchController {
     @Autowired
     SearchService searchService;
 
-    @GetMapping("/anime")
-    public ResponseEntity<?> anime(@RequestBody String title) {
+    @GetMapping("/anime/{title}")
+    public ResponseEntity<?> anime(@PathVariable String title) {
         return ResponseEntity.ok(searchService.searchByTitle(Anime.class,title));
     }
 
-    @GetMapping("/game")
-    public ResponseEntity<?> game(@RequestBody String title) {
+    @GetMapping("/game/{title}")
+    public ResponseEntity<?> game(@PathVariable String title) {
         return ResponseEntity.ok(searchService.searchByTitle(Game.class,title));
     }
 
-    @GetMapping("/movie")
-    public ResponseEntity<?> movie(@RequestBody String title) {
+    @GetMapping("/movie/{title}")
+    public ResponseEntity<?> movie(@PathVariable String title) {
         return ResponseEntity.ok(searchService.searchByTitle(Movie.class,title));
     }
 
-    @GetMapping("/tv_show")
-    public ResponseEntity<?> TvShow(@RequestBody String title) {
+    @GetMapping("/tv_show/{title}")
+    public ResponseEntity<?> TvShow(@PathVariable String title) {
         return ResponseEntity.ok(searchService.searchByTitle(TvShow.class,title));
     }
 
-    @GetMapping("/comic/")
-    public ResponseEntity<?> comic(@RequestBody String title) {
+    @GetMapping("/comic/{title}")
+    public ResponseEntity<?> comic(@PathVariable String title) {
         return ResponseEntity.ok(searchService.searchByTitle(Comic.class,title));
     }
 
-    @GetMapping("/anime/creator")
-    public ResponseEntity<?> animeCr(@RequestBody String title) {
+    @GetMapping("/anime/creator/{title}")
+    public ResponseEntity<?> animeCr(@PathVariable String title) {
         User user = userService.getUserFromContext();
         userService.checkUser(user);
         return ResponseEntity.ok(searchService.searchByTitleCreator(Anime.class, title, user));
     }
 
 
-    @GetMapping("/game/creator")
-    public ResponseEntity<?> gameCr(@RequestBody String title) {
+    @GetMapping("/game/creator/{title}")
+    public ResponseEntity<?> gameCr(@PathVariable String title) {
         User user = userService.getUserFromContext();
         userService.checkUser(user);
         return ResponseEntity.ok(searchService.searchByTitleCreator(Game.class, title, user));
     }
 
-    @GetMapping("/movie/creator")
-    public ResponseEntity<?> movieCr(@RequestBody String title) {
+    @GetMapping("/movie/creator/{title}")
+    public ResponseEntity<?> movieCr(@PathVariable String title) {
         User user = userService.getUserFromContext();
         userService.checkUser(user);
         return ResponseEntity.ok(searchService.searchByTitleCreator(Movie.class, title, user));
     }
 
-    @GetMapping("/tv_show/creator")
-    public ResponseEntity<?> tvShowCr(@RequestBody String title) {
+    @GetMapping("/tv_show/creator/{title}")
+    public ResponseEntity<?> tvShowCr(@PathVariable String title) {
         User user = userService.getUserFromContext();
         userService.checkUser(user);
         return ResponseEntity.ok(searchService.searchByTitleCreator(TvShow.class, title, user));
     }
-    @GetMapping("/comic/creator")
-    public ResponseEntity<?> comicCr(@RequestBody String title) {
+    @GetMapping("/comic/creator/{title}")
+    public ResponseEntity<?> comicCr(@PathVariable String title) {
         User user = userService.getUserFromContext();
         userService.checkUser(user);
         return ResponseEntity.ok(searchService.searchByTitleCreator(Comic.class, title, user));
