@@ -36,10 +36,13 @@ public class SearchRepository {
 //                tbId
 //                );
         quer = qTemplate;
-        quer += "like concat('%',?,'%') order by " + tbId;
-
-        SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(quer, title);
+        quer += "like lower(concat('%',?,'%')) order by " + tbId;
+        System.out.println("SEARCH");
+        if (title.contains("д")) {
+            System.out.println("aaaaaa");
+        }
         System.out.println(quer);
+        SqlRowSet sqlRowSet = jdbcTemplate.queryForRowSet(quer, title);
         List<CardDTO<T>> cards = omegaORM.getCards((Class<? extends OmegaEntity>) cl, sqlRowSet);
         return cards;
     }

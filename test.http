@@ -135,3 +135,10 @@ GET localhost:27401/api/review/all/75
 
 ###
 GET  localhost:27401/api/search/anime/f
+
+
+###
+GET http://localhost:27401/api/search/movie/creator
+Authorization:Bearer eyJhbGciOiJIUzUxMiJ9.eyJpYXQiOjE3MDM2MTcwNDcsImV4cCI6MTcwMzcwMzQ0Nywic3ViIjoib21lZ2EifQ.sDH_RQ-TR_32y9UooWEtfdmlYJAsqK0yuxLQd2lCazLXKnwYoni79KYaCdkb4gWM0F24u_90d91UrKhwpKokqQ
+
+д
