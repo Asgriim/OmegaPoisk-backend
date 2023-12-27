@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS  content_tags (
 CREATE TABLE IF NOT EXISTS review
 (
     id        SERIAL PRIMARY KEY,
-    test      TEXT,
+    txt      TEXT,
     userId    INT,
     contentId INT,
     FOREIGN KEY (userId) REFERENCES user_ (id) ON DELETE CASCADE,
